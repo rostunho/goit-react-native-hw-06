@@ -20,7 +20,7 @@ export default function App() {
   const auth = getAuth();
 
   onAuthStateChanged(auth, (user) => {
-    console.log("User: ", user);
+    console.dir("User: ", user);
     setUser(user);
   });
 

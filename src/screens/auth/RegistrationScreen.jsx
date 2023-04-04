@@ -16,9 +16,6 @@ export default function RegistrationScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    console.log("Login :", login);
-    console.log("Email :", email);
-    console.log("Password :", password);
     dispatch(
       authSignUpUser({ login: login, email: email, password: password })
     );
@@ -26,10 +23,6 @@ export default function RegistrationScreen({ navigation }) {
     setEmail("");
     setPassword("");
     setIsKeyboardVisible(false);
-    // navigation.navigate("Home", {
-    //   screen: "Default",
-    //   params: { screen: "Posts" },
-    // });
   };
 
   const onOutputPress = () => {

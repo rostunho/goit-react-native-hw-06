@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { authSignInUser } from "../../redux/auth/authOperations";
+import authSignInUser from "../../redux/auth/authOperations";
 import { Keyboard, StyleSheet, View, Text } from "react-native";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import AuthInput from "../../components/AuthInput";

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../../redux/auth/authOperations";
 import { Keyboard, StyleSheet, View, Text } from "react-native";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import AuthInput from "../../components/AuthInput";
@@ -9,15 +11,12 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handleSubmit = () => {
-    console.log("Email :", email);
-    console.log("Password :", password);
+    dispatch(authSignInUser({ email: email, password: password }));
     setEmail("");
     setPassword("");
-    navigation.navigate("Home", {
-      screen: "Default",
-      params: { screen: "Posts" },
-    });
   };
 
   const onOutputPress = () => {

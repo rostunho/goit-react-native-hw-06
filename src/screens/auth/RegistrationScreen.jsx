@@ -19,7 +19,9 @@ export default function RegistrationScreen({ navigation }) {
     console.log("Login :", login);
     console.log("Email :", email);
     console.log("Password :", password);
-    dispatch(authSignUpUser({ login, email, password }));
+    dispatch(
+      authSignUpUser({ login: login, email: email, password: password })
+    );
     setLogin("");
     setEmail("");
     setPassword("");

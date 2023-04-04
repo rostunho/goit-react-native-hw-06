@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { authSignUpUser } from "../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
 import { StyleSheet, View, Text, Keyboard } from "react-native";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import Avatar from "../../components/Avatar";
@@ -11,18 +13,21 @@ export default function RegistrationScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handleSubmit = () => {
     console.log("Login :", login);
     console.log("Email :", email);
     console.log("Password :", password);
+    dispatch(authSignUpUser({ login, email, password }));
     setLogin("");
     setEmail("");
     setPassword("");
     setIsKeyboardVisible(false);
-    navigation.navigate("Home", {
-      screen: "Default",
-      params: { screen: "Posts" },
-    });
+    // navigation.navigate("Home", {
+    //   screen: "Default",
+    //   params: { screen: "Posts" },
+    // });
   };
 
   const onOutputPress = () => {

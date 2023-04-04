@@ -6,9 +6,10 @@ import { View, Text } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-get-random-values";
+import { store } from "./src/redux/store";
 
 export default function App() {
-  const routing = useRoute(true);
+  const routing = useRoute(false);
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("./src/assets/fonts/Roboto-Medium.ttf"),
     "Roboto-Regular": require("./src/assets/fonts/Roboto-Regular.ttf"),
@@ -32,5 +33,9 @@ export default function App() {
     );
   }
 
-  return <NavigationContainer>{routing}</NavigationContainer>;
+  return (
+    <Provider store={store}>
+      <NavigationContainer>{routing}</NavigationContainer>
+    </Provider>
+  );
 }

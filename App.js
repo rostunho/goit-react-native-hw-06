@@ -7,22 +7,13 @@ import * as SplashScreen from "expo-splash-screen";
 import "react-native-get-random-values";
 import { useRoute } from "./src/router";
 import { store } from "./src/redux/store";
+import { roboto } from "./src/assets/fonts/fonts";
 // import db from "./src/firebase/config";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Main from "./src/components/Main";
 
 export default function App() {
-  const [user, setUser] = useState(null);
-  const routing = useRoute(user);
-  const [fontsLoaded] = useFonts({
-    "Roboto-Medium": require("./src/assets/fonts/Roboto-Medium.ttf"),
-    "Roboto-Regular": require("./src/assets/fonts/Roboto-Regular.ttf"),
-  });
-
-  // const state = useSelector((state) => state);
-
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => setUser(user));
-
+  const [fontsLoaded] = useFonts(roboto);
   // inspect later
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -43,7 +34,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>{routing}</NavigationContainer>
+      <Main />
     </Provider>
   );
 }

@@ -11,6 +11,8 @@ import {
 import * as Location from "expo-location";
 import { useIsFocused } from "@react-navigation/native";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 import { ClearFormIcon } from "../../assets/custom-icons";
 import ScreenWrapper from "../../components/ScreenWrapper";
@@ -19,15 +21,20 @@ import PostInput from "../../components/PostInput";
 import SubmitButton from "../../components/SubmitButton";
 
 export default function CreatePostScreen({ navigation }) {
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  // const [keyboardOffset, setKeyboardOffset] = useState(0);
   const [photo, setPhoto] = useState(null);
   const [photoTitle, setPhotoTitle] = useState("");
-  // const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState(null);
   const [locationTitle, setLocationTitle] = useState("");
+  const [city, setCity] = useState(null);
+  const [country, setCountry] = useState(null);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [hasLocationPermision, setHasLocationPermision] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(
+    "Test: Initial Error message"
+  );
+  // const [keyboardOffset, setKeyboardOffset] = useState(0);
   const isFocused = useIsFocused();
+  const { userId, login } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -39,70 +46,56 @@ export default function CreatePostScreen({ navigation }) {
         }
         setHasLocationPermision(true);
       } catch (error) {
-        return Alert.alert(error.message);
+        setErrorMessage(error.message);
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (!photo) {
+      return;
+    }
+    (async () => {
+      await detectLocation();
+    })();
+  }, [photo]);
 
   const onPublishHandler = async () => {
     if (!photo) {
       return Alert.alert("You should choose or take a photo for publication.");
     }
-
     if (locationTitle === "" || photoTitle === "") {
       return Alert.alert("Please fill an empty fields");
     }
 
     try {
-      if (!hasLocationPermision) {
-        return Alert.alert(errorMessage);
-      }
-
-      const location = await Location.getCurrentPositionAsync();
-      const autoLocation = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-
-      const data = createPost(
-        location,
-        autoLocation[0].country,
-        autoLocation[0].city
-      );
-      navigation.navigate("Posts", data);
-      uploadPhoto();
+      await uploadPost();
+      navigation.navigate("Posts");
       clearForm();
     } catch (error) {
       return Alert.alert(error.message);
     }
   };
 
-  const clearForm = () => {
-    setPhoto(null);
-    setPhotoTitle("");
-    setLocationTitle("");
-  };
-
-  const onOutputPress = () => {
-    setIsKeyboardVisible(false);
-    Keyboard.dismiss();
-  };
-
-  const createPost = (location, country, city) => {
-    const newPost = {
-      id: nanoid(4).toString(),
-      photo: photo,
-      photoTitle: photoTitle,
-      location: location,
-      detectedLocation: {
-        country: country,
-        city: city,
-      },
-      locationTitle: locationTitle,
-      comments: [],
-    };
-
-    return newPost;
+  const uploadPost = async () => {
+    try {
+      const photoUrl = await uploadPhoto();
+      const db = getFirestore();
+      const doc = await addDoc(collection(db, "posts"), {
+        userId,
+        login,
+        photoUrl,
+        photoTitle,
+        location,
+        locationTitle,
+        country,
+        city,
+        comments: [],
+      });
+      console.log("Document written with ID: ", doc.id);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
   const uploadPhoto = async () => {
@@ -110,7 +103,7 @@ export default function CreatePostScreen({ navigation }) {
       // make jpeg-photo and create his unique id
       const response = await fetch(photo.uri);
       const file = await response.blob();
-      const uniqId = nanoid(16);
+      const uniqId = nanoid(28);
       // upload jpeg-photo to server
       const storage = getStorage();
       const storageRef = ref(storage, `post-images/${uniqId}`);
@@ -119,19 +112,49 @@ export default function CreatePostScreen({ navigation }) {
       const processedPhotoUrl = await getDownloadURL(
         ref(storage, `post-images/${uniqId}`)
       );
-      console.log(processedPhotoUrl);
+
+      return processedPhotoUrl;
     } catch (error) {
       console.log(error.message);
       Alert.alert(error.message);
     }
   };
 
+  const detectLocation = async () => {
+    if (!hasLocationPermision) {
+      console.log("Has not location Permisions");
+      return Alert.alert(errorMessage);
+    }
+
+    const location = await Location.getCurrentPositionAsync();
+    const detectedPosition = await Location.reverseGeocodeAsync({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+
+    const country = detectedPosition[0].country;
+    const city = detectedPosition[0].city;
+
+    setLocation(location);
+    setCountry(country);
+    setCity(city);
+  };
+
+  const onOutputPress = () => {
+    setIsKeyboardVisible(false);
+    Keyboard.dismiss();
+  };
+
+  const clearForm = () => {
+    setPhoto(null);
+    setPhotoTitle("");
+    setLocationTitle("");
+  };
+
   return (
     <ScreenWrapper keyboardVerticalOffset={() => {}} onPress={onOutputPress}>
       <View style={styles.container}>
         <PhotoViewer setPhoto={setPhoto} photo={photo} focused={isFocused} />
-
-        {/* <Button title="TEST UPLOAD" onPress={uploadPhoto} /> */}
 
         <View style={styles.form}>
           <PostInput

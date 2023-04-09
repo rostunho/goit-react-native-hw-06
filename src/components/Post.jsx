@@ -67,6 +67,7 @@ export default function Post({
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("window").width,
+    height: Dimensions.get("window").width / 1.5,
     marginTop: 32,
     paddingLeft: 16,
     paddingRight: 16,
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     objectFit: "cover",
-    height: 240,
+    height: "100%",
     width: "100%",
     borderRadius: 8,
   },

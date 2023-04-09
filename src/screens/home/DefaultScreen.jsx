@@ -1,5 +1,10 @@
+import { useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TouchableOpacity, TouchableHighlight, StyleSheet } from "react-native";
+import {
+  authLSignOutUser,
+  authSignOutUser,
+} from "../../redux/auth/authOperations";
 import PostsScreen from "../main/PostsScreen";
 import CreatePostScreen from "../main/CreatePostScreen";
 import ProfileScreen from "../main/ProfileScreen";
@@ -14,6 +19,12 @@ import {
 const MainTab = createBottomTabNavigator();
 
 export default function DefaultScreen({ navigation }) {
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(authSignOutUser());
+  };
+
   return (
     <>
       <MainTab.Navigator
@@ -32,10 +43,7 @@ export default function DefaultScreen({ navigation }) {
             },
             headerRight: () => {
               return (
-                <TouchableOpacity
-                  activeOpacity={0.75}
-                  onPress={() => navigation.navigate("Login")}
-                >
+                <TouchableOpacity activeOpacity={0.75} onPress={logOut}>
                   <LogOutIcon />
                 </TouchableOpacity>
               );

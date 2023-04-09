@@ -6,9 +6,11 @@ import {
   Alert,
   Keyboard,
   Dimensions,
+  Button,
 } from "react-native";
 import * as Location from "expo-location";
 import { useIsFocused } from "@react-navigation/native";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { nanoid } from "nanoid";
 import { ClearFormIcon } from "../../assets/custom-icons";
 import ScreenWrapper from "../../components/ScreenWrapper";
@@ -18,9 +20,10 @@ import SubmitButton from "../../components/SubmitButton";
 
 export default function CreatePostScreen({ navigation }) {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const [keyboardOffset, setKeyboardOffset] = useState(0);
+  // const [keyboardOffset, setKeyboardOffset] = useState(0);
   const [photo, setPhoto] = useState(null);
   const [photoTitle, setPhotoTitle] = useState("");
+  // const [location, setLocation] = useState(null);
   const [locationTitle, setLocationTitle] = useState("");
   const [hasLocationPermision, setHasLocationPermision] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -31,7 +34,7 @@ export default function CreatePostScreen({ navigation }) {
       try {
         const location = await Location.requestForegroundPermissionsAsync();
         if (!location.granted) {
-          setErrorMessage("Permission to access location was denied");
+          Alert.alert("Permission to access location was denied");
           return;
         }
         setHasLocationPermision(true);
@@ -67,6 +70,7 @@ export default function CreatePostScreen({ navigation }) {
         autoLocation[0].city
       );
       navigation.navigate("Posts", data);
+      uploadPhoto();
       clearForm();
     } catch (error) {
       return Alert.alert(error.message);
@@ -101,13 +105,34 @@ export default function CreatePostScreen({ navigation }) {
     return newPost;
   };
 
+  const uploadPhoto = async () => {
+    try {
+      // make jpeg-photo and create his unique id
+      const response = await fetch(photo.uri);
+      const file = await response.blob();
+      const uniqId = nanoid(16);
+      // upload jpeg-photo to server
+      const storage = getStorage();
+      const storageRef = ref(storage, `post-images/${uniqId}`);
+      await uploadBytes(storageRef, file);
+      // get back url to jpeg-photo
+      const processedPhotoUrl = await getDownloadURL(
+        ref(storage, `post-images/${uniqId}`)
+      );
+      console.log(processedPhotoUrl);
+    } catch (error) {
+      console.log(error.message);
+      Alert.alert(error.message);
+    }
+  };
+
   return (
-    <ScreenWrapper
-      keyboardVerticalOffset={() => keyboardOffset}
-      onPress={onOutputPress}
-    >
+    <ScreenWrapper keyboardVerticalOffset={() => {}} onPress={onOutputPress}>
       <View style={styles.container}>
         <PhotoViewer setPhoto={setPhoto} photo={photo} focused={isFocused} />
+
+        {/* <Button title="TEST UPLOAD" onPress={uploadPhoto} /> */}
+
         <View style={styles.form}>
           <PostInput
             style={{ height: 50 }}

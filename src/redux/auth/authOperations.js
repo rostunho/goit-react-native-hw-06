@@ -6,7 +6,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
+import { Alert } from "react-native";
 import { authSlice } from "./authSlice";
 
 const auth = getAuth();
@@ -17,23 +19,12 @@ export const authSignUpUser =
     try {
       // Create user Profile on Firebase:
       await createUserWithEmailAndPassword(auth, email, password);
-
-      // const user = auth.currentUser;
-      // await updateProfile(user, {
-      //   displayName: login,
-      // });
-
-      // Add "displayName" field in user object on Firebase:
+      // Add new field "displayName" to UserProfile Object
       await updateProfile(auth.currentUser, { displayName: login });
-
-      // Update user object on Redux:
+      // Update User State  object on Redux:
       const { uid, displayName } = auth.currentUser;
-      dispatch(
-        authSlice.actions.updateUserProfile({
-          userId: uid,
-          login: displayName,
-        })
-      );
+      const updatedProfile = { userId: uid, login: displayName };
+      dispatch(authSlice.actions.updateUserProfile(updatedProfile));
     } catch (error) {
       console.log(error);
       console.log(error.message);
@@ -45,17 +36,27 @@ export const authSignInUser =
   async (dispatch, getState) => {
     // const auth = getAuth();
     try {
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-      console.log("User: ", user);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.log(error);
-      console.log(error.code);
-      console.log(error.message);
+      return Alert.alert(error.code);
     }
   };
 
-export const authStateChangeUser = async (dispatch, getState) => {
-  await onAuthStateChanged(auth, (user) => setUser(user));
+export const authStateChangeUser = () => async (dispatch, getState) => {
+  await onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const updatedProfile = {
+        userId: user.uid,
+        login: user.displayName,
+      };
+
+      dispatch(authSlice.actions.updateUserProfile(updatedProfile));
+      dispatch(authSlice.actions.authStateChange({ stateChange: true }));
+    }
+  });
 };
 
-export const authLogOutUser = () => async (dispatch, getState) => {};
+export const authSignOutUser = () => async (dispatch, getState) => {
+  await signOut(auth);
+  dispatch(authSlice.actions.authLogOut());
+};

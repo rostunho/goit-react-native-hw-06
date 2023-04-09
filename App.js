@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { View, Text } from "react-native";
 import { useFonts } from "expo-font";
@@ -17,12 +17,11 @@ export default function App() {
     "Roboto-Medium": require("./src/assets/fonts/Roboto-Medium.ttf"),
     "Roboto-Regular": require("./src/assets/fonts/Roboto-Regular.ttf"),
   });
-  const auth = getAuth();
 
-  onAuthStateChanged(auth, (user) => {
-    console.dir("User: ", user);
-    setUser(user);
-  });
+  // const state = useSelector((state) => state);
+
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => setUser(user));
 
   // inspect later
   const onLayoutRootView = useCallback(async () => {

@@ -31,7 +31,9 @@ export default function PostsScreen({ route, navigation }) {
               source={{ uri: item.photoUrl }}
               photoTitle={item.photoTitle}
               locationTitle={item.locationTitle}
-              onCommentsPress={() => navigation.navigate("Comments")}
+              onCommentsPress={() =>
+                navigation.navigate("Comments", { postId: item.id })
+              }
               onLocationPress={() =>
                 navigation.navigate("Map", {
                   location: item.location,

@@ -2,7 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { GoBackIcon } from "../../assets/custom-icons";
 import DefaultScreen from "./DefaultScreen";
-import CommetsScreen from "./CommetsScreen";
+import CommentsScreen from "./CommentsScreen";
 import MapScreen from "./MapScreen";
 
 const HomeStack = createStackNavigator();
@@ -34,7 +34,7 @@ export default function HomeScreen({ navigation }) {
         options={{ headerShown: false }}
         component={DefaultScreen}
       />
-      <HomeStack.Screen name="Comments" component={CommetsScreen} />
+      <HomeStack.Screen name="Comments" component={CommentsScreen} />
       <HomeStack.Screen name="Map" component={MapScreen} />
     </HomeStack.Navigator>
   );

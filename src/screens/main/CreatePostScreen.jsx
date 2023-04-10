@@ -81,7 +81,7 @@ export default function CreatePostScreen({ navigation }) {
     try {
       const photoUrl = await uploadPhoto();
       const db = getFirestore();
-      const doc = await addDoc(collection(db, "posts"), {
+      const docRef = await addDoc(collection(db, "posts"), {
         userId,
         login,
         photoUrl,
@@ -90,11 +90,10 @@ export default function CreatePostScreen({ navigation }) {
         locationTitle,
         country,
         city,
-        comments: [],
       });
-      console.log("Document written with ID: ", doc.id);
+      console.log("Document written with ID: ", docRef.id);
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error adding document: ", error.message);
     }
   };
 

@@ -11,7 +11,7 @@ export default function Comment({ text, time, own }) {
     >
       <Avatar small />
       <View style={styles.textBox}>
-        <Text style={styles.text}>Testing text</Text>
+        <Text style={styles.text}>{text}</Text>
         <Text
           style={{
             ...styles.date,
@@ -19,7 +19,7 @@ export default function Comment({ text, time, own }) {
             marginLeft: !own ? "auto" : 0,
           }}
         >
-          time
+          {time}
         </Text>
       </View>
     </View>
@@ -28,8 +28,9 @@ export default function Comment({ text, time, own }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width - 32,
-    marginHorizontal: "auto",
+    // width: Dimensions.get("window").width - 32,
+    // marginHorizontal: "auto",
+    marginBottom: 8,
   },
   textBox: {
     width: Dimensions.get("window").width - 76,

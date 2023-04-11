@@ -1,5 +1,15 @@
-import { useState, useEffect } from "react";
-import { View, StyleSheet, Alert, Keyboard, FlatList } from "react-native";
+import { useState, useEffect, useRef } from "react";
+import {
+  View,
+  StyleSheet,
+  Alert,
+  Keyboard,
+  FlatList,
+  Dimensions,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Button,
+} from "react-native";
 import { useSelector } from "react-redux";
 import {
   getFirestore,
@@ -12,19 +22,26 @@ import {
 import ScreenWrapper from "../../components/ScreenWrapper";
 import CommentInput from "../../components/CommentInput";
 import Comment from "../../components/Comment";
+import SavedPhoto from "../../components/SavedPhoto";
 
 export default function CommentsScreen({ route }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const { userId, login } = useSelector((state) => state.auth);
+  const { postId, photoUrl } = route.params;
   const db = getFirestore();
+  const listRef = useRef();
 
   useEffect(() => {
     getAllComments();
   }, []);
 
-  const { userId, login } = useSelector((state) => state.auth);
-  const { postId } = route.params;
+  useEffect(() => {
+    setTimeout(() => {
+      listRef.current?.scrollToEnd();
+    }, 1);
+  }, [isKeyboardVisible]);
 
   const onSubmit = async () => {
     try {
@@ -73,10 +90,31 @@ export default function CommentsScreen({ route }) {
           paddingBottom: isKeyboardVisible ? 330 : 16,
         }}
       >
-        <View style={styles.list}>
-          <Comment />
-
-          <FlatList />
+        <View style={styles.photoBox}>
+          <SavedPhoto source={photoUrl} />
+        </View>
+        <View
+          style={{
+            ...styles.list,
+            height: !isKeyboardVisible
+              ? styles.container.height - styles.photoBox.height - 82
+              : styles.container.height - styles.photoBox.height - 82 - 380,
+          }}
+        >
+          {comments.length > 0 && (
+            <FlatList
+              ref={listRef}
+              data={comments}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <Comment
+                  text={item.comment}
+                  time={item.time}
+                  own={userId === item.user.userId}
+                />
+              )}
+            />
+          )}
         </View>
         <CommentInput
           value={newComment}
@@ -92,21 +130,27 @@ export default function CommentsScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%",
-    justifyContent: "flex-end",
+    height: Dimensions.get("window").height - 88,
+    justifyContent: "flex-start",
     alignItems: "center",
-    // paddingTop: 120,
+    paddingLeft: 16,
+    paddingRight: 16,
     backgroundColor: "#fff",
   },
+  photoBox: {
+    objectFit: "cover",
+    height: ((Dimensions.get("window").width - 32) * 9) / 16,
+    marginVertical: 32,
+  },
+  avoidingView: {
+    height: 600,
+  },
   list: {
-    // justifyContent: "flex-start",
-    marginTop: 32,
-    // marginBottom: "auto",
+    height: 350,
+    // height: "100%",
+    // marginTop: 32,
   },
 });
 
-// const getAllComments = async () => {
-//   onSnapshot(collection(db, "posts", postId, "comments"), (docsSnap) => {
-//     setComments(docsSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-//   });
-// };
+{
+}

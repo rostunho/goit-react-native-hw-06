@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { CommentsIcon, LocationIcon } from "../assets/custom-icons";
 import { useState } from "react";
+import SavedPhoto from "./SavedPhoto";
 
 export default function Post({
   source,
@@ -22,7 +23,7 @@ export default function Post({
 
   return (
     <View style={styles.container}>
-      <Image source={source} style={styles.image} />
+      <SavedPhoto source={source} style={styles.image} />
       <Text style={styles.title}>{photoTitle}</Text>
       <View style={styles.interactiveArea}>
         <Pressable
@@ -66,18 +67,11 @@ export default function Post({
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").width / 1.5,
+    // width: Dimensions.get("window").width,
+    // height: Dimensions.get("window").width / 1.5,
     marginTop: 32,
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  image: {
-    flex: 1,
-    objectFit: "cover",
-    height: "100%",
-    width: "100%",
-    borderRadius: 8,
+    // paddingLeft: 16,
+    // paddingRight: 16,
   },
   title: {
     fontSize: 16,

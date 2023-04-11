@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import Post from "../../components/Post";
 
-export default function PostsScreen({ route, navigation }) {
+export default function PostsScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const db = getFirestore();
 
@@ -32,7 +32,10 @@ export default function PostsScreen({ route, navigation }) {
               photoTitle={item.photoTitle}
               locationTitle={item.locationTitle}
               onCommentsPress={() =>
-                navigation.navigate("Comments", { postId: item.id })
+                navigation.navigate("Comments", {
+                  postId: item.id,
+                  photoUrl: { uri: item.photoUrl },
+                })
               }
               onLocationPress={() =>
                 navigation.navigate("Map", {
@@ -54,5 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
+    paddingLeft: 16,
+    paddingRight: 16,
   },
 });

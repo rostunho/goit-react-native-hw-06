@@ -38,7 +38,7 @@ export default function RegistrationScreen({ navigation }) {
           paddingBottom: isKeyboardVisible ? 330 : 78,
         }}
       >
-        <Avatar />
+        <Avatar large />
         <Text style={styles.title}>Registration</Text>
         <View style={styles.form}>
           <AuthInput

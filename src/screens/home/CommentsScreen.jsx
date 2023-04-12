@@ -16,6 +16,7 @@ import {
   onSnapshot,
   collection,
 } from "firebase/firestore";
+import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import CommentInput from "../../components/CommentInput";
 import Comment from "../../components/Comment";
@@ -24,7 +25,7 @@ import SavedPhoto from "../../components/SavedPhoto";
 export default function CommentsScreen({ route }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
   const { userId, login } = useSelector((state) => state.auth);
   const { postId, photoUrl } = route.params;
   const db = getFirestore();
@@ -68,10 +69,14 @@ export default function CommentsScreen({ route }) {
   };
 
   const getAllComments = async () => {
-    const docsRef = collection(db, "posts", postId, "comments");
-    onSnapshot(docsRef, ({ docs }) => {
-      setComments(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    });
+    try {
+      const docsRef = collection(db, "posts", postId, "comments");
+      onSnapshot(docsRef, ({ docs }) => {
+        setComments(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      });
+    } catch (error) {
+      Alert.alert(error.message);
+    }
   };
 
   const hideKeyboard = () => {

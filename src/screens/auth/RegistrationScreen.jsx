@@ -2,6 +2,7 @@ import { useState } from "react";
 import { authSignUpUser } from "../../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
 import { StyleSheet, View, Text, Keyboard } from "react-native";
+import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import Avatar from "../../components/Avatar";
 import AuthInput from "../../components/AuthInput";
@@ -11,7 +12,8 @@ export default function RegistrationScreen({ navigation }) {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
+  s;
 
   const dispatch = useDispatch();
 
@@ -51,6 +53,8 @@ export default function RegistrationScreen({ navigation }) {
           <AuthInput
             placeholder="Email"
             value={email}
+            textContentType="emailAddress"
+            keyboardType="email-address"
             onFocus={() => setIsKeyboardVisible(true)}
             onSubmitEditing={() => setIsKeyboardVisible(false)}
             onChangeText={(value) => setEmail(value)}

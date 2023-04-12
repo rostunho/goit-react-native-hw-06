@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  onSnapshot,
+} from "firebase/firestore";
 import Post from "../../components/Post";
 
 export default function PostsScreen({ navigation }) {
@@ -13,8 +18,11 @@ export default function PostsScreen({ navigation }) {
 
   const getAllPosts = async () => {
     try {
-      const { docs } = await getDocs(collection(db, "posts"));
-      setPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const docsRef = collection(db, "posts");
+      onSnapshot(docsRef, ({ docs }) => {
+        console.log("new docs:", docs);
+        setPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      });
     } catch (error) {
       console.log(error.message);
     }

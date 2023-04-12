@@ -14,6 +14,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, getFirestore } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { nanoid } from "nanoid";
+import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import { ClearFormIcon } from "../../assets/custom-icons";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import PhotoViewer from "../../components/PhotoViewer";
@@ -27,7 +28,7 @@ export default function CreatePostScreen({ navigation }) {
   const [locationTitle, setLocationTitle] = useState("");
   const [city, setCity] = useState(null);
   const [country, setCountry] = useState(null);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
   const [hasLocationPermision, setHasLocationPermision] = useState(false);
   const [errorMessage, setErrorMessage] = useState(
     "Test: Initial Error message"

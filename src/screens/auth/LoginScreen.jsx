@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { authSignInUser } from "../../redux/auth/authOperations";
-import { Keyboard, StyleSheet, View, Text } from "react-native";
+import { Keyboard, StyleSheet, View, Text, BackHandler } from "react-native";
+import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import AuthInput from "../../components/AuthInput";
 import AuthButtons from "../../components/AuthButtons";
@@ -9,7 +10,7 @@ import AuthButtons from "../../components/AuthButtons";
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
 
   const dispatch = useDispatch();
 
@@ -37,6 +38,8 @@ export default function LoginScreen({ navigation }) {
           <AuthInput
             placeholder="Email"
             value={email}
+            textContentType="emailAddress"
+            keyboardType="email-address"
             onFocus={() => {
               setIsKeyboardVisible(true);
             }}

@@ -11,6 +11,8 @@ export default function AuthInput({
   placeholder,
   secured = false,
   value,
+  textContentType,
+  keyboardType,
   onFocus,
   onBlur,
   onChangeText,
@@ -27,11 +29,13 @@ export default function AuthInput({
       {!secured ? (
         <TextInput
           style={styles.input}
+          value={value}
           placeholder={placeholder}
           placeholderTextColor="#BDBDBD"
+          textContentType={textContentType}
+          keyboardType={keyboardType}
           onFocus={onFocus}
           onBlur={onBlur}
-          value={value}
           onChangeText={onChangeText}
           onSubmitEditing={onSubmitEditing}
         />
@@ -42,6 +46,8 @@ export default function AuthInput({
             placeholder="Password"
             placeholderTextColor="#BDBDBD"
             value={value}
+            textContentType={textContentType}
+            keyboardType={keyboardType}
             onFocus={onFocus}
             onBlur={onBlur}
             onChangeText={onChangeText}

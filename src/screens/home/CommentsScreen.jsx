@@ -6,9 +6,6 @@ import {
   Keyboard,
   FlatList,
   Dimensions,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Button,
 } from "react-native";
 import { useSelector } from "react-redux";
 import {
@@ -97,8 +94,12 @@ export default function CommentsScreen({ route }) {
           style={{
             ...styles.list,
             height: !isKeyboardVisible
-              ? styles.container.height - styles.photoBox.height - 82
-              : styles.container.height - styles.photoBox.height - 82 - 380,
+              ? styles.container.height - styles.photoBox.height - 88 - 66
+              : styles.container.height -
+                styles.photoBox.height -
+                88 -
+                50 -
+                330,
           }}
         >
           {comments.length > 0 && (
@@ -118,7 +119,9 @@ export default function CommentsScreen({ route }) {
         </View>
         <CommentInput
           value={newComment}
-          onFocus={() => setIsKeyboardVisible(true)}
+          onFocus={() => {
+            setIsKeyboardVisible(true);
+          }}
           onChangeText={(value) => setNewComment(value)}
           onSubmit={onSubmit}
         />

@@ -12,6 +12,7 @@ export default function ScreenWrapper({
   children,
   keyboardVerticalOffset,
   onPress,
+  withScroll,
 }) {
   return (
     <KeyboardAvoidingView
@@ -19,7 +20,19 @@ export default function ScreenWrapper({
       style={styles.avoidingView}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <TouchableWithoutFeedback onPress={onPress}>
+      {!withScroll ? (
+        <TouchableWithoutFeedback onPress={onPress}>
+          <View style={styles.container}>
+            <ImageBackground
+              style={styles.imageBg}
+              source={require("../assets/images/photo-bg.jpg")}
+            >
+              {children}
+              <View />
+            </ImageBackground>
+          </View>
+        </TouchableWithoutFeedback>
+      ) : (
         <View style={styles.container}>
           <ImageBackground
             style={styles.imageBg}
@@ -29,7 +42,7 @@ export default function ScreenWrapper({
             <View />
           </ImageBackground>
         </View>
-      </TouchableWithoutFeedback>
+      )}
     </KeyboardAvoidingView>
   );
 }

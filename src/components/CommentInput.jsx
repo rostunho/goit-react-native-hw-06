@@ -42,13 +42,8 @@ export default function CommentInput({
 
 const styles = StyleSheet.create({
   container: {
-    // position: "absolute",
-    // bottom: 16,
-    // left: 16,
-
     width: Dimensions.get("window").width - 32,
-    // marginHorizontal: "auto",
-    marginTop: "auto",
+    // marginTop: "auto",
   },
   input: {
     height: 50,

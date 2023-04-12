@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 16,
     backgroundColor: "rgba(0, 0, 0, 0.03)",
-    // backgroundColor: "orange",
+
     borderRadius: 6,
   },
   text: {

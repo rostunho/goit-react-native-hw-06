@@ -137,6 +137,7 @@ export default function CommentsScreen({ route }) {
             <CommentInput
               value={newComment}
               onFocus={() => setIsKeyboardVisible(true)}
+              onBlur={() => setIsKeyboardVisible(false)}
               onChangeText={(value) => setNewComment(value)}
               onSubmit={onSubmit}
             />

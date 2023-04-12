@@ -39,7 +39,11 @@ export default function DefaultScreen({ navigation }) {
           options={{
             title: "Publications",
             tabBarIcon: ({ focused }) => {
-              return <PostsIcon focused={focused} />;
+              return (
+                <TouchableOpacity onPress={() => navigation.navigate("Posts")}>
+                  <PostsIcon focused={focused} />
+                </TouchableOpacity>
+              );
             },
             headerRight: () => {
               return (
@@ -89,7 +93,13 @@ export default function DefaultScreen({ navigation }) {
           options={{
             headerShown: false,
             tabBarIcon: ({ focused }) => {
-              return <ProfileIcon focused={focused} />;
+              return (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Profile")}
+                >
+                  <ProfileIcon focused={focused} />
+                </TouchableOpacity>
+              );
             },
           }}
         />

@@ -27,6 +27,7 @@ export default function CommentInput({
         placeholderTextColor="#BDBDBD"
         onChangeText={onChangeText}
         onFocus={onFocus}
+        onBlur={onBlur}
       />
       <TouchableHighlight
         activeOpacity={0.25}

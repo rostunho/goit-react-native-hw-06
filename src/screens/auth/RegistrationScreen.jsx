@@ -104,6 +104,7 @@ export default function RegistrationScreen({ navigation }) {
             value={email}
             textContentType="emailAddress"
             keyboardType="email-address"
+            autoCapitalize="none"
             onFocus={() => setIsKeyboardVisible(true)}
             onSubmitEditing={() => setIsKeyboardVisible(false)}
             onChangeText={(value) => setEmail(value)}

@@ -40,6 +40,7 @@ export default function LoginScreen({ navigation }) {
             value={email}
             textContentType="emailAddress"
             keyboardType="email-address"
+            autoCapitalize="none"
             onFocus={() => {
               setIsKeyboardVisible(true);
             }}

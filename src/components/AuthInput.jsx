@@ -13,6 +13,7 @@ export default function AuthInput({
   value,
   textContentType,
   keyboardType,
+  autoCapitalize,
   onFocus,
   onBlur,
   onChangeText,
@@ -34,6 +35,7 @@ export default function AuthInput({
           placeholderTextColor="#BDBDBD"
           textContentType={textContentType}
           keyboardType={keyboardType}
+          autoCapitalize={autoCapitalize}
           onFocus={onFocus}
           onBlur={onBlur}
           onChangeText={onChangeText}
@@ -48,6 +50,7 @@ export default function AuthInput({
             value={value}
             textContentType={textContentType}
             keyboardType={keyboardType}
+            autoCapitalize={autoCapitalize}
             onFocus={onFocus}
             onBlur={onBlur}
             onChangeText={onChangeText}

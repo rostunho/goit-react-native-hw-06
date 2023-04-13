@@ -95,11 +95,12 @@ const styles = StyleSheet.create({
   container: {
     // width: Dimensions.get("window").width,
     // height: Dimensions.get("window").width / 1.5,
-    marginTop: 32,
+    marginBottom: 32,
     // paddingLeft: 16,
     // paddingRight: 16,
   },
   title: {
+    fontFamily: "Roboto-Medium",
     fontSize: 16,
     lineHeight: 19,
     fontWeight: "500",
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     marginRight: 24,
   },
   commentsCount: {
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
   },
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   likesCount: {
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
   },
@@ -137,6 +140,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   location: {
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     textDecorationLine: "underline",

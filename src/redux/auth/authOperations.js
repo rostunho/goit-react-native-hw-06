@@ -24,11 +24,14 @@ export const authSignUpUser =
         displayName: login,
         photoURL: avatar,
       });
+      console.log("CURRENT USER IN OPERATION:", auth.currentUser);
       // Update User State  object on Redux:
       const { uid, displayName, photoURL } = auth.currentUser;
+      console.log(email);
       const updatedProfile = {
         userId: uid,
         login: displayName,
+        email: email,
         avatar: photoURL,
       };
       dispatch(authSlice.actions.updateUserProfile(updatedProfile));

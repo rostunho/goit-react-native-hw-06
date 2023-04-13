@@ -29,7 +29,6 @@ export default function ProfileScreen() {
 
   useEffect(() => {
     setCurrentAvatar(avatar);
-    console.log("RUN USE EFFECT");
   }, []);
 
   const getUserPosts = async () => {

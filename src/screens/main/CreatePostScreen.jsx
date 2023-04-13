@@ -33,7 +33,7 @@ export default function CreatePostScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState(
     "Test: Initial Error message"
   );
-  // const [keyboardOffset, setKeyboardOffset] = useState(0);
+
   const isFocused = useIsFocused();
   const { userId, login } = useSelector((state) => state.auth);
 

@@ -20,6 +20,40 @@ export function AddPhotoIcon(props) {
   );
 }
 
+export function RemovePhotoIcon(props) {
+  return (
+    <Svg
+      width={25}
+      height={25}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <G clipPath="url(#prefix__clip0_37063_92)">
+        <Circle
+          cx={12.5}
+          cy={12.5}
+          r={12}
+          transform="rotate(-45 12.5 12.5)"
+          fill="#fff"
+          stroke="#E8E8E8"
+        />
+        <Path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M8.257 7.55l-.707.707 4.243 4.243-4.243 4.243.707.707 4.243-4.243 4.243 4.243.707-.707-4.243-4.243 4.243-4.243-.707-.707-4.243 4.243L8.257 7.55z"
+          fill="#BDBDBD"
+        />
+      </G>
+      <Defs>
+        <ClipPath id="prefix__clip0_37063_92">
+          <Path fill="#fff" d="M0 0h25v25H0z" />
+        </ClipPath>
+      </Defs>
+    </Svg>
+  );
+}
+
 export function LogOutIcon(props) {
   return (
     <Svg

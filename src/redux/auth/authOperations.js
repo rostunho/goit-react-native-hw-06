@@ -14,16 +14,23 @@ import { authSlice } from "./authSlice";
 const auth = getAuth();
 
 export const authSignUpUser =
-  ({ login, email, password }) =>
+  ({ login, email, password, avatar }) =>
   async (dispatch, getState) => {
     try {
       // Create user Profile on Firebase:
       await createUserWithEmailAndPassword(auth, email, password);
-      // Add new field "displayName" to UserProfile Object
-      await updateProfile(auth.currentUser, { displayName: login });
+      // Add new fields with reserved names "displayName" and "photoURL" to UserProfile Object
+      await updateProfile(auth.currentUser, {
+        displayName: login,
+        photoURL: avatar,
+      });
       // Update User State  object on Redux:
-      const { uid, displayName } = auth.currentUser;
-      const updatedProfile = { userId: uid, login: displayName };
+      const { uid, displayName, photoURL } = auth.currentUser;
+      const updatedProfile = {
+        userId: uid,
+        login: displayName,
+        avatar: photoURL,
+      };
       dispatch(authSlice.actions.updateUserProfile(updatedProfile));
     } catch (error) {
       console.log(error);

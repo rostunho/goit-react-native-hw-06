@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Image, Alert } from "react-native";
-import { AddPhotoIcon } from "../assets/custom-icons";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import { AddPhotoIcon, RemovePhotoIcon } from "../assets/custom-icons";
 
-export default function Avatar({ large, small }) {
+export default function Avatar({ large, small, add, source, onPress }) {
   const [avatarSize, setAvatarSize] = useState(null);
 
   useEffect(() => {
@@ -16,9 +16,6 @@ export default function Avatar({ large, small }) {
       return {
         height: 120,
         width: 120,
-        borderRadius: 16,
-        position: "absolute",
-        top: -60,
       };
     } else if (small) {
       return { height: 28, width: 28, borderRadius: 28, marginTop: 2 };
@@ -29,19 +26,32 @@ export default function Avatar({ large, small }) {
 
   return (
     <View style={{ ...styles.container, ...avatarSize }}>
-      {large && <AddPhotoIcon style={styles.addIcon} />}
+      <Image source={source} style={styles.image} />
+      {large && add && (
+        <TouchableOpacity style={styles.addIcon} onPress={onPress}>
+          <AddPhotoIcon />
+        </TouchableOpacity>
+      )}
+      {large && !add && (
+        <TouchableOpacity style={styles.addIcon} onPress={onPress}>
+          <RemovePhotoIcon />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    // position: "absolute",
-    // top: -60,
-    // height: 120,
-    // width: 120,
-    // borderRadius: 16,
+    position: "absolute",
+    top: -60,
+    borderRadius: 16,
     backgroundColor: "#F6F6F6",
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    borderRadius: 16,
   },
   addIcon: {
     position: "absolute",

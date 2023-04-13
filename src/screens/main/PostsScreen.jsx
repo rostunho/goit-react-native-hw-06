@@ -20,7 +20,6 @@ export default function PostsScreen({ navigation }) {
     try {
       const docsRef = collection(db, "posts");
       onSnapshot(docsRef, ({ docs }) => {
-        console.log("new docs:", docs);
         setPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       });
     } catch (error) {

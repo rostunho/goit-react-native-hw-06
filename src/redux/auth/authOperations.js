@@ -38,6 +38,27 @@ export const authSignUpUser =
     }
   };
 
+export const editUser =
+  ({ login, avatar }) =>
+  async (dispatch, getstate) => {
+    try {
+      await updateProfile(auth.currentUser, {
+        displayName: login,
+        photoURL: avatar,
+      });
+      const { uid, displayName, photoURL } = auth.currentUser;
+      const updatedProfile = {
+        userId: uid,
+        login: displayName,
+        avatar: photoURL,
+      };
+      dispatch(authSlice.actions.updateUserProfile(updatedProfile));
+    } catch (error) {
+      console.log(error);
+      console.log(error.message);
+    }
+  };
+
 export const authSignInUser =
   ({ email, password }) =>
   async (dispatch, getState) => {

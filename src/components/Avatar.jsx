@@ -16,6 +16,8 @@ export default function Avatar({ large, small, add, source, onPress }) {
       return {
         height: 120,
         width: 120,
+        position: "absolute",
+        top: -60,
       };
     } else if (small) {
       return { height: 28, width: 28, borderRadius: 28, marginTop: 2 };
@@ -43,8 +45,8 @@ export default function Avatar({ large, small, add, source, onPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    top: -60,
+    // position: "absolute",
+    // top: -60,
     borderRadius: 16,
     backgroundColor: "#F6F6F6",
   },

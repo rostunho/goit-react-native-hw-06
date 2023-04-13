@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import {
   StyleSheet,
   View,
@@ -8,43 +9,39 @@ import {
 } from "react-native";
 import { SendCommentIcon } from "../assets/custom-icons";
 
-export default function CommentInput({
-  placeholder,
-  secured = false,
-  value,
-  onFocus,
-  onBlur,
-  onChangeText,
-  onSubmit,
-}) {
-  return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        multiline
-        value={value}
-        placeholder="Comment"
-        placeholderTextColor="#BDBDBD"
-        onChangeText={onChangeText}
-        onFocus={onFocus}
-        onBlur={onBlur}
-      />
-      <TouchableHighlight
-        activeOpacity={0.25}
-        underlayColor="#DE5E00"
-        style={styles.button}
-        onPress={onSubmit}
-      >
-        <SendCommentIcon />
-      </TouchableHighlight>
-    </View>
-  );
-}
+const CommentInput = forwardRef(
+  ({ value, autoFocus, onFocus, onBlur, onChangeText, onSubmit }, ref) => {
+    return (
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          multiline
+          value={value}
+          placeholder="Comment"
+          placeholderTextColor="#BDBDBD"
+          onChangeText={onChangeText}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          ref={ref}
+        />
+        <TouchableHighlight
+          activeOpacity={0.25}
+          underlayColor="#DE5E00"
+          style={styles.button}
+          onPress={onSubmit}
+        >
+          <SendCommentIcon />
+        </TouchableHighlight>
+      </View>
+    );
+  }
+);
+
+export default CommentInput;
 
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("window").width - 32,
-    // marginTop: "auto",
   },
   input: {
     height: 50,

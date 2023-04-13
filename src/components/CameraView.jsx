@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from "react";
+import { forwardRef } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Camera } from "expo-camera";
 import { MakePhotoIcon } from "../assets/custom-icons";

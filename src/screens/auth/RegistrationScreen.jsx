@@ -13,7 +13,6 @@ export default function RegistrationScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
-  s;
 
   const dispatch = useDispatch();
 

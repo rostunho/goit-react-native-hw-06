@@ -111,7 +111,6 @@ export default function PhotoViewer({ setPhoto, photo, focused }) {
 
   return (
     <>
-      {/* <Button title="CHECK PERMISSIONS" onPress={checkPermissions} /> */}
       <View style={styles.container}>
         <View style={styles.cameraBox}>
           {picture ? (

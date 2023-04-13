@@ -3,7 +3,6 @@ import { Keyboard } from "react-native";
 
 export function useKeyboard(initialValue, ref = null) {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(initialValue);
-  const listRef = useRef();
 
   useEffect(() => {
     const keyboardShowing = () => {

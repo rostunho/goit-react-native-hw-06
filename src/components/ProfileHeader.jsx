@@ -76,21 +76,27 @@ export default function ProfileHeader({ onPress }) {
 
   return (
     <View style={styles.container}>
-      <Avatar large source={{ uri: currentAvatar }} onPress={changeAvatar} />
-      <TouchableOpacity
-        style={styles.logOutIcon}
-        activeOpacity={0.75}
-        onPress={onPress}
-      >
-        <LogOutIcon />
-      </TouchableOpacity>
-      <Text style={styles.userName}>{login}</Text>
+      <View style={styles.profile}>
+        <Avatar large source={{ uri: currentAvatar }} onPress={changeAvatar} />
+        <TouchableOpacity
+          style={styles.logOutIcon}
+          activeOpacity={0.75}
+          onPress={onPress}
+        >
+          <LogOutIcon />
+        </TouchableOpacity>
+        <Text style={styles.userName}>{login}</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: 220,
+    justifyContent: "flex-end",
+  },
+  profile: {
     width: "100%",
     alignItems: "center",
     backgroundColor: "#fff",

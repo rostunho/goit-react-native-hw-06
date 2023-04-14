@@ -95,9 +95,9 @@ const styles = StyleSheet.create({
   container: {
     // width: Dimensions.get("window").width,
     // height: Dimensions.get("window").width / 1.5,
-    marginBottom: 32,
-    // paddingLeft: 16,
-    // paddingRight: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+    backgroundColor: "#fff",
   },
   title: {
     fontFamily: "Roboto-Medium",

@@ -55,15 +55,44 @@ export default function ProfileScreen() {
   };
 
   return (
-    <ScreenWrapper>
-      <SafeAreaView>
+    <ScreenWrapper withScroll>
+      <SafeAreaView style={{ justifyContent: "flex-end" }}>
         <FlatList
+          style={styles.list}
           ListHeaderComponent={<ProfileHeader onPress={logOut} />}
-          ListHeaderComponentStyle={{}}
+          ListHeaderComponentStyle={{ marginTop: 88 }}
+          initialNumToRender={1}
+          data={userPosts}
+          renderItem={({ item }) => (
+            <Post
+              withLikes
+              source={{ uri: item.photoUrl }}
+              photoTitle={item.photoTitle}
+              locationTitle={item.locationTitle}
+              onCommentsPress={() =>
+                navigation.navigate("Comments", {
+                  postId: item.id,
+                  photoUrl: { uri: item.photoUrl },
+                })
+              }
+              onLocationPress={() =>
+                navigation.navigate("Map", {
+                  location: item.location,
+                  city: item.city,
+                  country: item.country,
+                })
+              }
+            />
+          )}
         />
       </SafeAreaView>
     </ScreenWrapper>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  list: {
+    // marginTop: 88,
+    // backgroundColor: "#fff",
+  },
+});

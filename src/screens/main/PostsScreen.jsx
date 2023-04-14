@@ -75,14 +75,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
-    paddingLeft: 16,
-    paddingRight: 16,
+    // paddingLeft: 16,
+    // paddingRight: 16,
   },
   profile: {
     flexDirection: "row",
     alignItems: "center",
     height: 60,
     marginVertical: 32,
+    paddingHorizontal: 16,
   },
   user: {
     marginLeft: 8,

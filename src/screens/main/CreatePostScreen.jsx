@@ -82,7 +82,6 @@ export default function CreatePostScreen({ navigation }) {
     try {
       const photoUrl = await uploadPhoto();
       const db = getFirestore();
-      const createdUnix = Date.now();
       const docRef = await addDoc(collection(db, "posts"), {
         userId,
         login,
@@ -92,7 +91,8 @@ export default function CreatePostScreen({ navigation }) {
         locationTitle,
         country,
         city,
-        createdUnix,
+        createdUnix: Date.now(),
+        likes: 0,
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {

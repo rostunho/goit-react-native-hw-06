@@ -6,11 +6,20 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
+import {
+  doc,
+  updateDoc,
+  getFirestore,
+  getDoc,
+  query,
+  onSnapshot,
+} from "firebase/firestore";
 import { CommentsIcon, LikeIcon, LocationIcon } from "../assets/custom-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SavedPhoto from "./SavedPhoto";
 
 export default function Post({
+  postId,
   withLikes,
   source,
   photoTitle,
@@ -21,9 +30,60 @@ export default function Post({
   onLikesPress,
   onLocationPress,
 }) {
+  const [overallLikesCount, setOverallLikesCount] = useState(null);
+  const [liked, setLiked] = useState(false);
   const [locationPressed, setLocationPressed] = useState(false);
   const [commentsPressed, setCommentsPressed] = useState(false);
   const [likesPressed, setLikesPressed] = useState(false);
+  const db = getFirestore();
+
+  useEffect(() => {
+    (async () => {
+      await getOveralLikeCount();
+    })();
+  }, []);
+
+  const putLike = async () => {
+    setLiked((state) => !state);
+    !liked ? await changeOveralLikeCount("add") : await changeOveralLikeCount();
+  };
+
+  const getOveralLikeCount = async () => {
+    try {
+      const postRef = doc(db, "posts", postId);
+      const post = await getDoc(postRef);
+      const likes = post.data().likes;
+
+      const unsub = onSnapshot(postRef, (doc) => {
+        console.log("Current data: ", doc.data().likes);
+
+        const likes = doc.data().likes;
+        setOverallLikesCount(likes);
+      });
+      return likes;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const changeOveralLikeCount = async (add) => {
+    try {
+      const postRef = doc(db, "posts", postId);
+      const post = await getDoc(postRef);
+      const likes = post.data().likes;
+
+      await updateDoc(
+        postRef,
+        add
+          ? {
+              likes: likes + 1,
+            }
+          : { likes: likes - 1 }
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -52,18 +112,18 @@ export default function Post({
           {withLikes && (
             <Pressable
               onPressIn={() => setLikesPressed(true)}
-              onPress={onLikesPress}
+              onPress={putLike}
               onPressOut={() => setLikesPressed(false)}
             >
               <View style={styles.likesArea}>
-                <LikeIcon filled={commentsPressed ? true : false} />
+                <LikeIcon filled={liked ? true : false} />
                 <Text
                   style={{
                     ...styles.likesCount,
                     color: likesPressed ? "#FF6C00" : "#BDBDBD",
                   }}
                 >
-                  {likesCount}
+                  {overallLikesCount}
                 </Text>
               </View>
             </Pressable>

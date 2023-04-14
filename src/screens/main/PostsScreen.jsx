@@ -50,6 +50,7 @@ export default function PostsScreen({ navigation }) {
           renderItem={({ item }) => (
             <Post
               withLikes
+              postId={item.id}
               source={{ uri: item.photoUrl }}
               photoTitle={item.photoTitle}
               locationTitle={item.locationTitle}

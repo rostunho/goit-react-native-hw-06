@@ -80,7 +80,7 @@ export default function CommentsScreen({ route }) {
       setDoc(docRef, {
         comment: newComment,
         user: { userId, login },
-        time: Date.now(),
+        createdUnix: Date.now(),
       });
     } catch (error) {
       console.log(

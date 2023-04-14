@@ -14,6 +14,8 @@ import {
   setDoc,
   onSnapshot,
   collection,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import ScreenWrapper from "../../components/ScreenWrapper";
@@ -89,10 +91,15 @@ export default function CommentsScreen({ route }) {
   };
 
   const getAllComments = async () => {
-    const docsRef = collection(db, "posts", postId, "comments");
-    onSnapshot(docsRef, ({ docs }) => {
-      setComments(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    });
+    try {
+      const docsRef = collection(db, "posts", postId, "comments");
+      const sortedDocs = query(docsRef, orderBy("time", "desc"));
+      onSnapshot(sortedDocs, ({ docs }) => {
+        setComments(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const hideKeyboard = () => {

@@ -16,7 +16,6 @@ import {
   collection,
   query,
   orderBy,
-  getCountFromServer,
 } from "firebase/firestore";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import CommentInput from "../../components/CommentInput";
@@ -27,7 +26,7 @@ export default function CommentsScreen({ route }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const { userId, login } = useSelector((state) => state.auth);
+  const { userId, login, avatar } = useSelector((state) => state.auth);
   const { postId, photoUrl } = route.params;
   const db = getFirestore();
   const listRef = useRef();
@@ -80,6 +79,7 @@ export default function CommentsScreen({ route }) {
       setDoc(docRef, {
         comment: newComment,
         user: { userId, login },
+        userAvatar: avatar,
         time: Date.now(),
       });
     } catch (error) {
@@ -145,8 +145,9 @@ export default function CommentsScreen({ route }) {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                   <Comment
-                    ref={inputRef}
+                    // ref={inputRef}
                     text={item.comment}
+                    userAvatar={item.userAvatar}
                     time={item.time}
                     own={userId === item.user.userId}
                   />

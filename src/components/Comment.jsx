@@ -1,7 +1,18 @@
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import Avatar from "./Avatar";
 
-export default function Comment({ text, time, own }) {
+export default function Comment({ text, time, userAvatar, own }) {
+  const parseTime = () => {
+    const commentTime = new Date(time);
+
+    const day = commentTime.toDateString().split(" ").slice(2, 3);
+    const month = commentTime.toDateString().split(" ").slice(1, 2);
+    const year = commentTime.toDateString().split(" ").slice(3);
+    const hour = commentTime.toLocaleTimeString().slice(0, 5);
+
+    return day + " " + month + "," + " " + year + " " + "|" + " " + hour;
+  };
+
   return (
     <View
       style={{
@@ -9,7 +20,7 @@ export default function Comment({ text, time, own }) {
         flexDirection: own ? "row-reverse" : "row",
       }}
     >
-      <Avatar small />
+      <Avatar small source={{ uri: userAvatar }} />
       <View style={styles.textBox}>
         <Text style={styles.text}>{text}</Text>
         <Text
@@ -19,7 +30,7 @@ export default function Comment({ text, time, own }) {
             marginLeft: !own ? "auto" : 0,
           }}
         >
-          {time}
+          {parseTime()}
         </Text>
       </View>
     </View>

@@ -71,7 +71,6 @@ export default function ProfileScreen({ navigation }) {
           style={styles.list}
           ListHeaderComponent={<ProfileHeader onPress={logOut} />}
           ListHeaderComponentStyle={{ marginTop: 88 }}
-          initialNumToRender={1}
           data={userPosts}
           renderItem={({ item }) => (
             <Post

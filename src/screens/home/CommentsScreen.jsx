@@ -16,8 +16,8 @@ import {
   collection,
   query,
   orderBy,
+  getCountFromServer,
 } from "firebase/firestore";
-import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import CommentInput from "../../components/CommentInput";
 import Comment from "../../components/Comment";
@@ -55,7 +55,7 @@ export default function CommentsScreen({ route }) {
     };
   }, []);
 
-  //........MAYBE GET BACK LATER...............
+  //........MAYBE IT WILL BACK LATER...........
   // useEffect(() => {
   //   setTimeout(() => {
   //     listRef.current?.scrollToEnd();
@@ -80,7 +80,7 @@ export default function CommentsScreen({ route }) {
       setDoc(docRef, {
         comment: newComment,
         user: { userId, login },
-        createdUnix: Date.now(),
+        time: Date.now(),
       });
     } catch (error) {
       console.log(
@@ -93,6 +93,7 @@ export default function CommentsScreen({ route }) {
   const getAllComments = async () => {
     try {
       const docsRef = collection(db, "posts", postId, "comments");
+
       const sortedDocs = query(docsRef, orderBy("time", "desc"));
       onSnapshot(sortedDocs, ({ docs }) => {
         setComments(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -158,7 +159,6 @@ export default function CommentsScreen({ route }) {
             <CommentInput
               ref={inputRef}
               value={newComment}
-              autoFocus={true}
               onFocus={() => setIsKeyboardVisible(true)}
               onBlur={() => setIsKeyboardVisible(false)}
               onChangeText={(value) => setNewComment(value)}

@@ -9,33 +9,31 @@ import {
 } from "react-native";
 import { SendCommentIcon } from "../assets/custom-icons";
 
-const CommentInput = forwardRef(
-  ({ value, autoFocus, onFocus, onBlur, onChangeText, onSubmit }, ref) => {
-    return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          multiline
-          value={value}
-          placeholder="Comment"
-          placeholderTextColor="#BDBDBD"
-          onChangeText={onChangeText}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          ref={ref}
-        />
-        <TouchableHighlight
-          activeOpacity={0.25}
-          underlayColor="#DE5E00"
-          style={styles.button}
-          onPress={onSubmit}
-        >
-          <SendCommentIcon />
-        </TouchableHighlight>
-      </View>
-    );
-  }
-);
+const CommentInput = forwardRef((props, ref) => {
+  return (
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        multiline
+        value={props.value}
+        placeholder="Comment"
+        placeholderTextColor="#BDBDBD"
+        onChangeText={props.onChangeText}
+        onFocus={props.onFocus}
+        onBlur={props.onBlur}
+        ref={ref}
+      />
+      <TouchableHighlight
+        activeOpacity={0.25}
+        underlayColor="#DE5E00"
+        style={styles.button}
+        onPress={props.onSubmit}
+      >
+        <SendCommentIcon />
+      </TouchableHighlight>
+    </View>
+  );
+});
 
 export default CommentInput;
 

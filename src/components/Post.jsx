@@ -13,6 +13,8 @@ import {
   getDoc,
   query,
   onSnapshot,
+  getCountFromServer,
+  collection,
 } from "firebase/firestore";
 import { CommentsIcon, LikeIcon, LocationIcon } from "../assets/custom-icons";
 import { useState, useEffect } from "react";
@@ -30,6 +32,7 @@ export default function Post({
   onLikesPress,
   onLocationPress,
 }) {
+  const [overallCommentsCount, setOverallCommentsCount] = useState(null);
   const [overallLikesCount, setOverallLikesCount] = useState(null);
   const [liked, setLiked] = useState(false);
   const [locationPressed, setLocationPressed] = useState(false);
@@ -40,8 +43,9 @@ export default function Post({
   useEffect(() => {
     (async () => {
       await getOveralLikeCount();
+      await getOveralCommentsCount();
     })();
-  }, []);
+  });
 
   const putLike = async () => {
     setLiked((state) => !state);
@@ -52,15 +56,27 @@ export default function Post({
     try {
       const postRef = doc(db, "posts", postId);
       const post = await getDoc(postRef);
-      const likes = post.data().likes;
+      // const likes = post.data().likes;
 
-      const unsub = onSnapshot(postRef, (doc) => {
-        console.log("Current data: ", doc.data().likes);
-
+      onSnapshot(postRef, (doc) => {
         const likes = doc.data().likes;
         setOverallLikesCount(likes);
+        return likes;
       });
-      return likes;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const getOveralCommentsCount = async () => {
+    try {
+      const commentsRef = collection(db, "posts", postId, "comments");
+      onSnapshot(commentsRef, ({ docs }) => {
+        console.log("docs:", docs.length);
+        const commentsCount = docs.length;
+        setOverallCommentsCount(commentsCount);
+        return commentsCount;
+      });
     } catch (error) {
       console.log(error.message);
     }
@@ -97,14 +113,14 @@ export default function Post({
             onPressOut={() => setCommentsPressed(false)}
           >
             <View style={styles.commentsArea}>
-              <CommentsIcon filled={commentsPressed ? true : false} />
+              <CommentsIcon filled={overallCommentsCount ? true : false} />
               <Text
                 style={{
                   ...styles.commentsCount,
                   color: commentsPressed ? "#FF6C00" : "#BDBDBD",
                 }}
               >
-                {commentsCount}
+                {overallCommentsCount}
               </Text>
             </View>
           </Pressable>

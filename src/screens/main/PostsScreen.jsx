@@ -45,7 +45,6 @@ export default function PostsScreen({ navigation }) {
       {posts.length > 0 && (
         <FlatList
           data={posts}
-          // columnWrapperStyle={{ marginBottom: 32 }}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Post
@@ -80,8 +79,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     backgroundColor: "#fff",
-    // paddingLeft: 16,
-    // paddingRight: 16,
   },
   profile: {
     flexDirection: "row",

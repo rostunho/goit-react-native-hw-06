@@ -26,7 +26,7 @@ import Avatar from "../../components/Avatar";
 import Post from "../../components/Post";
 import ProfileHeader from "../../components/ProfileHeader";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   const [userPosts, setUserPosts] = useState([]);
   const { login, userId, avatar } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ export default function ProfileScreen() {
       const ownPostsRef = query(postsRef, where("userId", "==", userId));
       // console.log(ownPostsRef);
       onSnapshot(ownPostsRef, ({ docs }) => {
-        setUserPosts(docs.map((doc) => ({ ...doc.data() })));
+        setUserPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       });
     } catch (error) {
       console.log(error.message);
@@ -65,7 +65,8 @@ export default function ProfileScreen() {
           data={userPosts}
           renderItem={({ item }) => (
             <Post
-              withLikes
+              // withLikes
+              postId={item.id}
               source={{ uri: item.photoUrl }}
               photoTitle={item.photoTitle}
               locationTitle={item.locationTitle}

@@ -6,6 +6,8 @@ import {
   getDocs,
   getFirestore,
   onSnapshot,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import Avatar from "../../components/Avatar";
 import Post from "../../components/Post";
@@ -22,7 +24,8 @@ export default function PostsScreen({ navigation }) {
   const getAllPosts = async () => {
     try {
       const docsRef = collection(db, "posts");
-      onSnapshot(docsRef, ({ docs }) => {
+      const sortedDocs = query(docsRef, orderBy("createdUnix", "desc"));
+      onSnapshot(sortedDocs, ({ docs }) => {
         setPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       });
     } catch (error) {
@@ -31,21 +34,22 @@ export default function PostsScreen({ navigation }) {
   };
 
   return (
-    posts.length > 0 && (
-      <View style={styles.container}>
-        <View style={styles.profile}>
-          <Avatar source={{ uri: avatar }} />
-          <View style={styles.user}>
-            <Text style={styles.name}>{login}</Text>
-            <Text style={styles.email}>{email}</Text>
-          </View>
+    <View style={styles.container}>
+      <View style={styles.profile}>
+        <Avatar source={{ uri: avatar }} />
+        <View style={styles.user}>
+          <Text style={styles.name}>{login}</Text>
+          <Text style={styles.email}>{email}</Text>
         </View>
+      </View>
+      {posts.length > 0 && (
         <FlatList
           data={posts}
           // columnWrapperStyle={{ marginBottom: 32 }}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Post
+              withLikes
               source={{ uri: item.photoUrl }}
               photoTitle={item.photoTitle}
               locationTitle={item.locationTitle}
@@ -65,15 +69,15 @@ export default function PostsScreen({ navigation }) {
             />
           )}
         />
-      </View>
-    )
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     backgroundColor: "#fff",
     // paddingLeft: 16,
     // paddingRight: 16,

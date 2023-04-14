@@ -95,6 +95,7 @@ export default function RegistrationScreen({ navigation }) {
           <AuthInput
             placeholder="Login"
             value={login}
+            autoCapitalize="words"
             onFocus={() => setIsKeyboardVisible(true)}
             onSubmitEditing={() => setIsKeyboardVisible(false)}
             onChangeText={(value) => setLogin(value)}

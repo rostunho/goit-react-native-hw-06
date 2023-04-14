@@ -72,15 +72,15 @@ export default function PhotoViewer({ setPhoto, photo, focused }) {
   };
 
   const onPressTrigger = async () => {
-    const photo = await __makePhoto();
-    await __savePhoto(photo);
+    const photo = await makePhoto();
+    await savePhoto(photo);
   };
 
   const clearPreview = async () => {
     setPicture(null);
   };
 
-  const __makePhoto = async () => {
+  const makePhoto = async () => {
     if (!hasCameraPermission) {
       return Alert.alert(errorMessage);
     }
@@ -96,7 +96,7 @@ export default function PhotoViewer({ setPhoto, photo, focused }) {
     }
   };
 
-  const __savePhoto = async (photo = picture) => {
+  const savePhoto = async (photo = picture) => {
     if (!hasLibraryPermission) {
       return Alert.alert(errorMessage);
     }

@@ -24,8 +24,8 @@ export default function PostsScreen({ navigation }) {
   const getAllPosts = async () => {
     try {
       const docsRef = collection(db, "posts");
-      const sortedDocs = query(docsRef, orderBy("createdUnix", "desc"));
-      onSnapshot(sortedDocs, ({ docs }) => {
+      const sortedDocsRef = query(docsRef, orderBy("createdUnix", "desc"));
+      onSnapshot(sortedDocsRef, ({ docs }) => {
         setPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       });
     } catch (error) {

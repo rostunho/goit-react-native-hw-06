@@ -17,6 +17,8 @@ import {
   where,
   getFirestore,
   onSnapshot,
+  orderBy,
+  getDoc,
 } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import { nanoid } from "nanoid";
@@ -28,19 +30,27 @@ import ProfileHeader from "../../components/ProfileHeader";
 
 export default function ProfileScreen({ navigation }) {
   const [userPosts, setUserPosts] = useState([]);
+  const [overallCommentsCount, setOverallCommentsCount] = useState(null);
   const { login, userId, avatar } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const db = getFirestore();
 
   useEffect(() => {
-    getUserPosts();
+    (async () => {
+      await getUserPosts();
+    })();
   }, []);
 
   const getUserPosts = async () => {
     try {
       const postsRef = collection(db, "posts");
-      const ownPostsRef = query(postsRef, where("userId", "==", userId));
-      // console.log(ownPostsRef);
+
+      const ownPostsRef = query(
+        postsRef,
+        where("userId", "==", userId),
+        orderBy("createdUnix", "desc")
+      );
+
       onSnapshot(ownPostsRef, ({ docs }) => {
         setUserPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       });
@@ -65,7 +75,7 @@ export default function ProfileScreen({ navigation }) {
           data={userPosts}
           renderItem={({ item }) => (
             <Post
-              // withLikes
+              withLikes
               postId={item.id}
               source={{ uri: item.photoUrl }}
               photoTitle={item.photoTitle}

@@ -6,15 +6,16 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
+import { useSelector } from "react-redux";
 import {
   doc,
   updateDoc,
   getFirestore,
   getDoc,
-  query,
   onSnapshot,
-  getCountFromServer,
   collection,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { CommentsIcon, LikeIcon, LocationIcon } from "../assets/custom-icons";
 import { useState, useEffect } from "react";
@@ -37,30 +38,26 @@ export default function Post({
   const [liked, setLiked] = useState(false);
   const [locationPressed, setLocationPressed] = useState(false);
   const [commentsPressed, setCommentsPressed] = useState(false);
-  const [likesPressed, setLikesPressed] = useState(false);
+  // const [likesPressed, setLikesPressed] = useState(false);
+  const { userId } = useSelector((state) => state.auth);
   const db = getFirestore();
 
   useEffect(() => {
     (async () => {
-      await getOveralLikeCount();
+      await getOveralLikesCount();
+      await inspectOwnLikes();
       await getOveralCommentsCount();
     })();
   });
 
-  const putLike = async () => {
-    setLiked((state) => !state);
-    !liked ? await changeOveralLikeCount("add") : await changeOveralLikeCount();
-  };
-
-  const getOveralLikeCount = async () => {
+  const getOveralLikesCount = async () => {
     try {
       const postRef = doc(db, "posts", postId);
       const post = await getDoc(postRef);
-      // const likes = post.data().likes;
 
       onSnapshot(postRef, (doc) => {
-        const likes = doc.data().likes;
-        setOverallLikesCount(likes);
+        const likes = doc?.data().likes;
+        setOverallLikesCount(likes.length);
         return likes;
       });
     } catch (error) {
@@ -72,7 +69,6 @@ export default function Post({
     try {
       const commentsRef = collection(db, "posts", postId, "comments");
       onSnapshot(commentsRef, ({ docs }) => {
-        console.log("docs:", docs.length);
         const commentsCount = docs.length;
         setOverallCommentsCount(commentsCount);
         return commentsCount;
@@ -82,23 +78,30 @@ export default function Post({
     }
   };
 
-  const changeOveralLikeCount = async (add) => {
+  const handleLikes = async () => {
     try {
       const postRef = doc(db, "posts", postId);
       const post = await getDoc(postRef);
       const likes = post.data().likes;
 
-      await updateDoc(
-        postRef,
-        add
-          ? {
-              likes: likes + 1,
-            }
-          : { likes: likes - 1 }
-      );
+      const didILikeIt = likes.find((like) => like === userId);
+      !didILikeIt ? setLiked(true) : setLiked(false);
+
+      await updateDoc(postRef, {
+        likes: !didILikeIt ? arrayUnion(userId) : arrayRemove(userId),
+      });
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const inspectOwnLikes = async () => {
+    const postRef = doc(db, "posts", postId);
+    const post = await getDoc(postRef);
+    const likes = post.data().likes;
+
+    const didILikeIt = likes.find((like) => like === userId);
+    didILikeIt ? setLiked(true) : setLiked(false);
   };
 
   return (
@@ -127,16 +130,17 @@ export default function Post({
 
           {withLikes && (
             <Pressable
-              onPressIn={() => setLikesPressed(true)}
-              onPress={putLike}
-              onPressOut={() => setLikesPressed(false)}
+              // onPressIn={() => setLikesPressed(true)}
+              onPress={handleLikes}
+              // onPressOut={() => setLikesPressed(false)}
             >
               <View style={styles.likesArea}>
                 <LikeIcon filled={liked ? true : false} />
                 <Text
                   style={{
                     ...styles.likesCount,
-                    color: likesPressed ? "#FF6C00" : "#BDBDBD",
+                    // color: liked ? "#FF6C00" : "#BDBDBD",
+                    color: "#BDBDBD",
                   }}
                 >
                   {overallLikesCount}

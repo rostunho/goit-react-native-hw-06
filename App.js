@@ -23,7 +23,6 @@ export default function App() {
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         onLayout={onLayoutRootView}
       >
-        {/* <Text>...Loading...</Text> */}
         <ActivityIndicator size="large" color="#FF6C00" />
       </View>
     );

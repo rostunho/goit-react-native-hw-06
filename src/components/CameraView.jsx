@@ -7,7 +7,13 @@ const CameraView = forwardRef((props, ref) => {
   return (
     props.focused && (
       <View style={styles.container}>
-        <Camera style={styles.camera} ref={ref} ratio="1:1" zoom={0}>
+        <Camera
+          style={styles.camera}
+          ref={ref}
+          ratio="1:1"
+          zoom={0}
+          onCameraReady={props.onCameraReady}
+        >
           <TouchableOpacity onPress={props.onPress}>
             <MakePhotoIcon />
           </TouchableOpacity>

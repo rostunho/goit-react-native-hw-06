@@ -14,7 +14,13 @@ import CameraView from "./CameraView";
 import PhotoPreview from "./PhotoPreview";
 import Notification from "./Notification";
 
-export default function PhotoViewer({ setPhoto, photo, focused }) {
+export default function PhotoViewer({
+  setPhoto,
+  photo,
+  focused,
+  setShowSpinner,
+  onCameraReady,
+}) {
   const [picture, setPicture] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
   const [hasLibraryPermission, setHasLibraryPermission] = useState(false);
@@ -72,8 +78,14 @@ export default function PhotoViewer({ setPhoto, photo, focused }) {
   };
 
   const onPressTrigger = async () => {
-    const photo = await makePhoto();
-    await savePhoto(photo);
+    try {
+      setShowSpinner(true);
+      const photo = await makePhoto();
+      await savePhoto(photo);
+      setShowSpinner(false);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const clearPreview = async () => {
@@ -89,6 +101,7 @@ export default function PhotoViewer({ setPhoto, photo, focused }) {
       const photo = await cameraRef.current.takePictureAsync({
         scale: 1,
       });
+
       setPicture(photo);
       return photo;
     } catch (error) {
@@ -121,6 +134,7 @@ export default function PhotoViewer({ setPhoto, photo, focused }) {
           ) : hasCameraPermission ? (
             <CameraView
               ref={cameraRef}
+              onCameraReady={onCameraReady}
               onPress={onPressTrigger}
               focused={focused}
             />
@@ -143,6 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingTop: 32,
+    paddingBottom: 8,
     paddingLeft: 16,
     paddingRight: 16,
     backgroundColor: "#fff",

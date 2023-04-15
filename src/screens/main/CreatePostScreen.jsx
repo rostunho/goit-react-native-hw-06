@@ -14,12 +14,14 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, getFirestore } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { nanoid } from "nanoid";
+import Spinner from "react-native-loading-spinner-overlay";
 import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import { ClearFormIcon } from "../../assets/custom-icons";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import PhotoViewer from "../../components/PhotoViewer";
 import PostInput from "../../components/PostInput";
 import SubmitButton from "../../components/SubmitButton";
+import CameraSpinner from "../../components/CameraSpinner";
 
 export default function CreatePostScreen({ navigation }) {
   const [photo, setPhoto] = useState(null);
@@ -28,12 +30,11 @@ export default function CreatePostScreen({ navigation }) {
   const [locationTitle, setLocationTitle] = useState("");
   const [city, setCity] = useState(null);
   const [country, setCountry] = useState(null);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
   const [hasLocationPermision, setHasLocationPermision] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(
-    "Test: Initial Error message"
-  );
-
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
+  const [showSpinner, setShowSpinner] = useState(true);
+  const [showOverlay, setShowOverlay] = useState(false);
   const isFocused = useIsFocused();
   const { userId, login } = useSelector((state) => state.auth);
 
@@ -70,9 +71,11 @@ export default function CreatePostScreen({ navigation }) {
     }
 
     try {
+      setShowOverlay(true);
       await uploadPost();
       navigation.navigate("Posts");
       clearForm();
+      setShowOverlay(false);
     } catch (error) {
       return Alert.alert(error.message);
     }
@@ -156,8 +159,16 @@ export default function CreatePostScreen({ navigation }) {
   return (
     <ScreenWrapper keyboardVerticalOffset={() => {}} onPress={onOutputPress}>
       <View style={styles.container}>
-        <PhotoViewer setPhoto={setPhoto} photo={photo} focused={isFocused} />
-
+        <View style={styles.viewerBox}>
+          {showSpinner && <CameraSpinner size={70} color={"#FF6C00"} />}
+          <PhotoViewer
+            setPhoto={setPhoto}
+            photo={photo}
+            focused={isFocused}
+            setShowSpinner={setShowSpinner}
+            onCameraReady={() => setShowSpinner(false)}
+          />
+        </View>
         <View style={styles.form}>
           <PostInput
             style={{ height: 50 }}
@@ -191,6 +202,7 @@ export default function CreatePostScreen({ navigation }) {
           </>
         )}
       </View>
+      <Spinner visible={showOverlay} />
     </ScreenWrapper>
   );
 }
@@ -205,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   form: {
-    paddingTop: 32,
+    paddingTop: 24,
   },
   button: {
     alignItems: "center",

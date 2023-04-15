@@ -1,16 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { authSignOutUser, editUser } from "../../redux/auth/authOperations";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  FlatList,
-  SafeAreaView,
-} from "react-native";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { StyleSheet, Alert, FlatList, SafeAreaView } from "react-native";
+
 import {
   collection,
   query,
@@ -18,47 +10,21 @@ import {
   getFirestore,
   onSnapshot,
   orderBy,
-  getDoc,
 } from "firebase/firestore";
-import * as ImagePicker from "expo-image-picker";
-import { nanoid } from "nanoid";
-import { LogOutIcon } from "../../assets/custom-icons";
+import { getPostsCollection } from "../../firebase/operations";
 import ScreenWrapper from "../../components/ScreenWrapper";
-import Avatar from "../../components/Avatar";
 import Post from "../../components/Post";
 import ProfileHeader from "../../components/ProfileHeader";
 
 export default function ProfileScreen({ navigation }) {
   const [userPosts, setUserPosts] = useState([]);
-  const [overallCommentsCount, setOverallCommentsCount] = useState(null);
-  const { login, userId, avatar } = useSelector((state) => state.auth);
+  const { userId } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const db = getFirestore();
 
   useEffect(() => {
-    (async () => {
-      await getUserPosts();
-    })();
+    getPostsCollection(setUserPosts, userId);
   }, []);
-
-  const getUserPosts = async () => {
-    try {
-      const postsRef = collection(db, "posts");
-
-      const ownPostsRef = query(
-        postsRef,
-        where("userId", "==", userId),
-        orderBy("createdUnix", "desc")
-      );
-
-      onSnapshot(ownPostsRef, ({ docs }) => {
-        setUserPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      });
-    } catch (error) {
-      console.log(error.message);
-      return Alert.alert(error.message);
-    }
-  };
 
   const logOut = () => {
     dispatch(authSignOutUser());

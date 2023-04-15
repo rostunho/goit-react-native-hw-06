@@ -9,6 +9,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import { getPostsCollection } from "../../firebase/operations";
 import Avatar from "../../components/Avatar";
 import Post from "../../components/Post";
 
@@ -18,20 +19,8 @@ export default function PostsScreen({ navigation }) {
   const db = getFirestore();
 
   useEffect(() => {
-    getAllPosts();
+    getPostsCollection(setPosts);
   }, []);
-
-  const getAllPosts = async () => {
-    try {
-      const docsRef = collection(db, "posts");
-      const sortedDocsRef = query(docsRef, orderBy("createdUnix", "desc"));
-      onSnapshot(sortedDocsRef, ({ docs }) => {
-        setPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   return (
     <View style={styles.container}>

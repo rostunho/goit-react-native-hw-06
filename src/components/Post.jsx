@@ -17,6 +17,12 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import {
+  getOveralLikesCount,
+  getOverallCommentsCount,
+  inspectOwnLikes,
+  toggleLikes,
+} from "../firebase/operations";
 import { CommentsIcon, LikeIcon, LocationIcon } from "../assets/custom-icons";
 import { useState, useEffect } from "react";
 import SavedPhoto from "./SavedPhoto";
@@ -43,66 +49,10 @@ export default function Post({
   const db = getFirestore();
 
   useEffect(() => {
-    (async () => {
-      await getOveralLikesCount();
-      await inspectOwnLikes();
-      await getOveralCommentsCount();
-    })();
+    getOveralLikesCount(setOverallLikesCount, postId);
+    inspectOwnLikes(setLiked, { userId, postId });
+    getOverallCommentsCount(setOverallCommentsCount, postId);
   });
-
-  const getOveralLikesCount = async () => {
-    try {
-      const postRef = doc(db, "posts", postId);
-      const post = await getDoc(postRef);
-
-      onSnapshot(postRef, (doc) => {
-        const likes = doc?.data().likes;
-        setOverallLikesCount(likes.length);
-        return likes;
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const getOveralCommentsCount = async () => {
-    try {
-      const commentsRef = collection(db, "posts", postId, "comments");
-      onSnapshot(commentsRef, ({ docs }) => {
-        const commentsCount = docs.length;
-        setOverallCommentsCount(commentsCount);
-        return commentsCount;
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const handleLikes = async () => {
-    try {
-      const postRef = doc(db, "posts", postId);
-      const post = await getDoc(postRef);
-      const likes = post.data().likes;
-
-      const didILikeIt = likes.find((like) => like === userId);
-      !didILikeIt ? setLiked(true) : setLiked(false);
-
-      await updateDoc(postRef, {
-        likes: !didILikeIt ? arrayUnion(userId) : arrayRemove(userId),
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const inspectOwnLikes = async () => {
-    const postRef = doc(db, "posts", postId);
-    const post = await getDoc(postRef);
-    const likes = post.data().likes;
-
-    const didILikeIt = likes.find((like) => like === userId);
-    didILikeIt ? setLiked(true) : setLiked(false);
-  };
 
   return (
     <View style={styles.container}>
@@ -130,17 +80,13 @@ export default function Post({
 
           {withLikes && (
             <Pressable
-              // onPressIn={() => setLikesPressed(true)}
-              onPress={handleLikes}
-              // onPressOut={() => setLikesPressed(false)}
+              onPress={() => toggleLikes(setLiked, { userId, postId })}
             >
               <View style={styles.likesArea}>
                 <LikeIcon filled={liked ? true : false} />
                 <Text
                   style={{
                     ...styles.likesCount,
-                    // color: liked ? "#FF6C00" : "#BDBDBD",
-                    color: "#BDBDBD",
                   }}
                 >
                   {overallLikesCount}
@@ -156,14 +102,7 @@ export default function Post({
         >
           <View style={styles.locationArea} onPress={() => {}}>
             <LocationIcon filled={locationPressed ? true : false} />
-            <Text
-              style={{
-                ...styles.location,
-                color: locationPressed ? "#FF6C00" : "#212121",
-              }}
-            >
-              {locationTitle}
-            </Text>
+            <Text style={styles.likeCount}>{locationTitle}</Text>
           </View>
         </Pressable>
       </View>
@@ -214,6 +153,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
+    color: "#BDBDBD",
   },
   locationArea: {
     flexDirection: "row",

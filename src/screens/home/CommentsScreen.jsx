@@ -8,15 +8,8 @@ import {
   Dimensions,
 } from "react-native";
 import { useSelector } from "react-redux";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  onSnapshot,
-  collection,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { getFirestore, doc, setDoc, collection } from "firebase/firestore";
+import { getPostComments } from "../../firebase/operations";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import CommentInput from "../../components/CommentInput";
 import Comment from "../../components/Comment";
@@ -33,7 +26,7 @@ export default function CommentsScreen({ route }) {
   const inputRef = useRef();
 
   useEffect(() => {
-    getAllComments();
+    getPostComments(setComments, postId);
   }, []);
 
   useEffect(() => {
@@ -87,19 +80,6 @@ export default function CommentsScreen({ route }) {
         "Error adding document into nested collection",
         error.message
       );
-    }
-  };
-
-  const getAllComments = async () => {
-    try {
-      const docsRef = collection(db, "posts", postId, "comments");
-
-      const sortedDocs = query(docsRef, orderBy("time", "desc"));
-      onSnapshot(sortedDocs, ({ docs }) => {
-        setComments(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      });
-    } catch (error) {
-      console.log(error.message);
     }
   };
 

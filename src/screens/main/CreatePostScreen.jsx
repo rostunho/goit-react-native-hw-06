@@ -14,6 +14,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, getFirestore } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { nanoid } from "nanoid";
+import { uploadPhoto, uploadPost } from "../../firebase/operations";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import { ClearFormIcon } from "../../assets/custom-icons";
@@ -72,7 +73,8 @@ export default function CreatePostScreen({ navigation }) {
 
     try {
       setShowOverlay(true);
-      await uploadPost();
+      const photoUrl = await uploadPhoto(photo.uri);
+      await uploadPost(photoUrl);
       navigation.navigate("Posts");
       clearForm();
       setShowOverlay(false);
@@ -83,7 +85,7 @@ export default function CreatePostScreen({ navigation }) {
 
   const uploadPost = async () => {
     try {
-      const photoUrl = await uploadPhoto();
+      const photoUrl = await uploadPhoto(photo.uri);
       const db = getFirestore();
       const docRef = await addDoc(collection(db, "posts"), {
         userId,
@@ -100,28 +102,6 @@ export default function CreatePostScreen({ navigation }) {
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
       console.error("Error adding document: ", error.message);
-    }
-  };
-
-  const uploadPhoto = async () => {
-    try {
-      // make jpeg-photo and create his unique id
-      const response = await fetch(photo.uri);
-      const file = await response.blob();
-      const uniqId = nanoid(28);
-      // upload jpeg-photo to server
-      const storage = getStorage();
-      const storageRef = ref(storage, `post-images/${uniqId}`);
-      await uploadBytes(storageRef, file);
-      // get back url to jpeg-photo
-      const processedPhotoUrl = await getDownloadURL(
-        ref(storage, `post-images/${uniqId}`)
-      );
-
-      return processedPhotoUrl;
-    } catch (error) {
-      console.log(error.message);
-      Alert.alert(error.message);
     }
   };
 

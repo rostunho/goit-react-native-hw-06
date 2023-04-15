@@ -1,21 +1,44 @@
 import { Alert } from "react-native";
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
+  getFirestore,
   doc,
-  collection,
-  getDocs,
   getDoc,
   updateDoc,
-  getFirestore,
+  collection,
   onSnapshot,
   query,
-  orderBy,
   where,
+  orderBy,
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import { nanoid } from "nanoid";
 
 const db = getFirestore();
+
+export const uploadPhoto = async (photo) => {
+  try {
+    // make jpeg-photo and create his unique id
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniqId = nanoid(28);
+    // upload jpeg-photo to server
+    const storage = getStorage();
+    const storageRef = ref(storage, `post-images/${uniqId}`);
+    await uploadBytes(storageRef, file);
+    // get back url to jpeg-photo
+    const processedPhotoUrl = await getDownloadURL(
+      ref(storage, `post-images/${uniqId}`)
+    );
+
+    return processedPhotoUrl;
+  } catch (error) {
+    console.log(error.message);
+    Alert.alert(error.message);
+  }
+};
 
 export const getPostsCollection = async (callback, userId) => {
   try {
@@ -48,13 +71,14 @@ export const getPostComments = async (callback, postId) => {
     });
   } catch (error) {
     console.log(error.message);
+    Alert.alert(error.message);
   }
 };
 
 export const getOveralLikesCount = async (callback, postId) => {
   try {
     const postRef = doc(db, "posts", postId);
-    // const post = await getDoc(postRef);
+
     onSnapshot(postRef, (doc) => {
       const likes = doc?.data().likes;
       callback(likes.length);
@@ -62,6 +86,7 @@ export const getOveralLikesCount = async (callback, postId) => {
     });
   } catch (error) {
     console.log(error.message);
+    Alert.alert(error.message);
   }
 };
 
@@ -75,6 +100,7 @@ export const getOverallCommentsCount = async (callback, postId) => {
     });
   } catch (error) {
     console.log(error.message);
+    Alert.alert(error.message);
   }
 };
 
@@ -87,8 +113,8 @@ export const inspectOwnLikes = async (callback, { userId, postId }) => {
     const didILikeIt = likes.find((like) => like === userId);
     didILikeIt ? callback(true) : callback(false);
   } catch (error) {
-    Alert.alert(error.message);
     console.log(error.message);
+    Alert.alert(error.message);
   }
 };
 
@@ -106,5 +132,6 @@ export const toggleLikes = async (callback, { userId, postId }) => {
     });
   } catch (error) {
     console.log(error.message);
+    Alert.alert(error.message);
   }
 };

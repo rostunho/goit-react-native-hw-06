@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authSignInUser } from "../../redux/auth/authOperations";
 import { Keyboard, StyleSheet, View, Text, BackHandler } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import AuthInput from "../../components/AuthInput";
@@ -12,12 +13,19 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
 
+  const [showSpinner, setShowSpinner] = useState(false);
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
-    dispatch(authSignInUser({ email: email, password: password }));
-    setEmail("");
-    setPassword("");
+  const handleSubmit = async () => {
+    try {
+      setShowSpinner(true);
+      await dispatch(authSignInUser({ email: email, password: password }));
+      setShowSpinner(false);
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const onOutputPress = () => {
@@ -27,6 +35,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <ScreenWrapper keyboardVerticalOffset={-330} onPress={onOutputPress}>
+      <Spinner visible={showSpinner} />
       <View
         style={{
           ...styles.container,

@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { Provider } from "react-redux";
-
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-get-random-values";
@@ -24,7 +23,8 @@ export default function App() {
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         onLayout={onLayoutRootView}
       >
-        <Text>...Loading...</Text>
+        {/* <Text>...Loading...</Text> */}
+        <ActivityIndicator size="large" color="#FF6C00" />
       </View>
     );
   }

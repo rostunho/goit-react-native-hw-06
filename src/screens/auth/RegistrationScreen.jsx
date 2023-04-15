@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, Keyboard, Alert } from "react-native";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import { nanoid } from "nanoid";
+import Spinner from "react-native-loading-spinner-overlay";
 import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import Avatar from "../../components/Avatar";
@@ -17,12 +18,14 @@ export default function RegistrationScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [isKeyboardVisible, setIsKeyboardVisible] = useKeyboard(false);
+  const [showSpinner, setShowSpinner] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async () => {
+    setShowSpinner(true);
     const avatarUrl = await uploadAvatar();
 
-    dispatch(
+    await dispatch(
       authSignUpUser({
         login: login,
         email: email,
@@ -30,6 +33,7 @@ export default function RegistrationScreen({ navigation }) {
         avatar: avatarUrl,
       })
     );
+    setShowSpinner(false);
     setLogin("");
     setEmail("");
     setPassword("");
@@ -83,6 +87,7 @@ export default function RegistrationScreen({ navigation }) {
 
   return (
     <ScreenWrapper keyboardVerticalOffset={-330} onPress={onOutputPress}>
+      <Spinner visible={showSpinner} />
       <View
         style={{
           ...styles.container,

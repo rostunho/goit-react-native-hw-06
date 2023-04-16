@@ -16,7 +16,6 @@ import Post from "../../components/Post";
 export default function PostsScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const { login, email, avatar } = useSelector((state) => state.auth);
-  const db = getFirestore();
 
   useEffect(() => {
     getPostsCollection(setPosts);

@@ -40,6 +40,27 @@ export const uploadPhoto = async (photo) => {
   }
 };
 
+export const uploadAvatar = async () => {
+  try {
+    // make jpeg-photo and create his unique id
+    const response = await fetch(avatar);
+    const file = await response.blob();
+    const uniqId = nanoid(28);
+    // upload jpeg-photo to server
+    const storage = getStorage();
+    const storageRef = ref(storage, `avatar-images/${uniqId}`);
+    const uploading = await uploadBytes(storageRef, file);
+    // get back url to jpeg-photo
+    const processedPhotoUrl = await getDownloadURL(
+      ref(storage, `avatar-images/${uniqId}`)
+    );
+    return processedPhotoUrl;
+  } catch (error) {
+    console.log(error.message);
+    Alert.alert(error.message);
+  }
+};
+
 export const getPostsCollection = async (callback, userId) => {
   try {
     const postsRef = collection(db, "posts");

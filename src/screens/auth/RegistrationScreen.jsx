@@ -2,9 +2,8 @@ import { useState } from "react";
 import { authSignUpUser } from "../../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
 import { StyleSheet, View, Text, Keyboard, Alert } from "react-native";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
-import { nanoid } from "nanoid";
+import { uploadPhoto } from "../../firebase/operations";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useKeyboard } from "../../assets/hooks/useKeyboard";
 import ScreenWrapper from "../../components/ScreenWrapper";
@@ -23,7 +22,7 @@ export default function RegistrationScreen({ navigation }) {
 
   const handleSubmit = async () => {
     setShowSpinner(true);
-    const avatarUrl = await uploadAvatar();
+    const avatarUrl = await uploadPhoto(avatar);
 
     await dispatch(
       authSignUpUser({
@@ -44,27 +43,6 @@ export default function RegistrationScreen({ navigation }) {
   const onOutputPress = () => {
     setIsKeyboardVisible(false);
     Keyboard.dismiss();
-  };
-
-  const uploadAvatar = async () => {
-    try {
-      // make jpeg-photo and create his unique id
-      const response = await fetch(avatar);
-      const file = await response.blob();
-      const uniqId = nanoid(28);
-      // upload jpeg-photo to server
-      const storage = getStorage();
-      const storageRef = ref(storage, `avatar-images/${uniqId}`);
-      const uploading = await uploadBytes(storageRef, file);
-      // get back url to jpeg-photo
-      const processedPhotoUrl = await getDownloadURL(
-        ref(storage, `avatar-images/${uniqId}`)
-      );
-      return processedPhotoUrl;
-    } catch (error) {
-      console.log(error.message);
-      Alert.alert(error.message);
-    }
   };
 
   const pickAvatar = async () => {

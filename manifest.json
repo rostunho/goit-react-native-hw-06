@@ -1,0 +1,137 @@
+{
+  "ios": {
+    "infoPlist": {
+      "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos.",
+      "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos."
+    },
+    "supportsTablet": true
+  },
+  "web": {
+    "favicon": "./src/assets/favicon.png"
+  },
+  "icon": "./src/assets/icon.png",
+  "name": "GoIT Homework",
+  "slug": "goit-react-native-hw-07",
+  "splash": {
+    "image": "./src/assets/splash.png",
+    "imageUrl": "https://classic-assets.eascdn.net/~assets/4dc203c1f48ad8b1e9734613e88be661",
+    "resizeMode": "contain",
+    "backgroundColor": "#ffffff"
+  },
+  "android": {
+    "permissions": [
+      "android.permission.CAMERA",
+      "android.permission.RECORD_AUDIO",
+      "android.permission.READ_EXTERNAL_STORAGE",
+      "android.permission.WRITE_EXTERNAL_STORAGE",
+      "android.permission.ACCESS_MEDIA_LOCATION",
+      "android.permission.ACCESS_COARSE_LOCATION",
+      "android.permission.ACCESS_FINE_LOCATION",
+      "android.permission.FOREGROUND_SERVICE"
+    ],
+    "adaptiveIcon": {
+      "backgroundColor": "#ffffff",
+      "foregroundImage": "./src/assets/adaptive-icon.png",
+      "foregroundImageUrl": "https://classic-assets.eascdn.net/~assets/97dae5a0e62ad8551d8a31897b425e63"
+    },
+    "softwareKeyboardLayoutMode": "pan"
+  },
+  "iconUrl": "https://classic-assets.eascdn.net/~assets/4e3f888fc8475f69fd5fa32f1ad5216a",
+  "locales": {},
+  "plugins": [
+    [
+      "expo-camera",
+      {
+        "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+      }
+    ],
+    [
+      "expo-media-library",
+      {
+        "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+        "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+        "isAccessMediaLocationEnabled": true
+      }
+    ],
+    [
+      "expo-image-picker",
+      {
+        "photosPermission": "The app accesses your photos to let you share them with your friends."
+      }
+    ],
+    [
+      "expo-location",
+      {
+        "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+      }
+    ]
+  ],
+  "version": "1.0.0",
+  "platforms": ["ios", "android"],
+  "sdkVersion": "47.0.0",
+  "orientation": "portrait",
+  "dependencies": [
+    "@react-native-async-storage/async-storage",
+    "@react-native-community/masked-view",
+    "@react-navigation/bottom-tabs",
+    "@react-navigation/native",
+    "@react-navigation/stack",
+    "@reduxjs/toolkit",
+    "expo",
+    "expo-camera",
+    "expo-font",
+    "expo-image-picker",
+    "expo-location",
+    "expo-media-library",
+    "expo-splash-screen",
+    "expo-status-bar",
+    "firebase",
+    "nanoid",
+    "react",
+    "react-native",
+    "react-native-gesture-handler",
+    "react-native-get-random-values",
+    "react-native-loading-spinner-overlay",
+    "react-native-maps",
+    "react-native-progress",
+    "react-native-reanimated",
+    "react-native-safe-area-context",
+    "react-native-screens",
+    "react-native-spinkit",
+    "react-native-svg",
+    "react-redux",
+    "expo-updates"
+  ],
+  "bundledAssets": [
+    "asset_68ea4734cf86bd544650aee05137d7bb.ttf",
+    "asset_8a36205bd9b83e03af0591a004bc97f4.ttf",
+    "asset_fb6210739c4993c1a86f812e6502e471.ttf",
+    "asset_7d40544b395c5949f4646f5e150fe020.png",
+    "asset_cdd04e13d4ec83ff0cd13ec8dabdc341.png",
+    "asset_a132ecc4ba5c1517ff83c0fb321bc7fc.png",
+    "asset_0ea69b5077e7c4696db85dbcba75b0e1.png",
+    "asset_f5b790e2ac193b3d41015edb3551f9b8.png",
+    "asset_5223c8d9b0d08b82a5670fb5f71faf78.png",
+    "asset_908bee6f88736067fb88f83053254af4.jpg",
+    "asset_be7cc8b9f386defe9719e386096b8045.png",
+    "asset_778ffc9fe8773a878e9c30a6304784de.png",
+    "asset_376d6a4c7f622917c39feb23671ef71d.png",
+    "asset_c79c3606a1cf168006ad3979763c7e0c.png",
+    "asset_02bc1fa7c0313217bde2d65ccbff40c9.png",
+    "asset_35ba0eaec5a4f5ed12ca16fabeae451d.png"
+  ],
+  "currentFullName": "@rostunho/goit-react-native-hw-07",
+  "originalFullName": "@rostunho/goit-react-native-hw-07",
+  "userInterfaceStyle": "light",
+  "id": "@rostunho/goit-react-native-hw-07",
+  "projectId": "c7046bb4-c8b2-4d44-a4e4-4ab12620afb2",
+  "scopeKey": "@rostunho/goit-react-native-hw-07",
+  "releaseId": "000515cc-6522-4797-87f3-006b3c572dd3",
+  "revisionId": "1.0.0-r.Leb627zkh",
+  "publishedTime": "2023-04-16T10:50:11.482Z",
+  "commitTime": "2023-04-16T10:50:11.654Z",
+  "bundleUrl": "https://classic-assets.eascdn.net/%40rostunho%2Fgoit-react-native-hw-07%2F1.0.0%2Fc617e67bc169d0419e2d4bd575aaa994-47.0.0-ios.js",
+  "bundleKey": "c617e67bc169d0419e2d4bd575aaa994",
+  "releaseChannel": "default",
+  "hostUri": "exp.host/@rostunho/goit-react-native-hw-07"
+}

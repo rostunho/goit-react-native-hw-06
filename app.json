@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "goit-react-native-06",
-    "slug": "goit-react-native-hw-06",
+    "name": "GoIT Homework",
+    "slug": "goit-react-native-hw-07",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",

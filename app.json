@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "GoIT Homework",
-    "slug": "goit-react-native-hw-07",
+    "name": "Photo Community",
+    "slug": "photo-community",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/custom-icon.png",

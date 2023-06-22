@@ -42,11 +42,7 @@ export default function PostInput({
             onChangeText={onChangeText}
             onSubmitEditing={onSubmitEditing}
           />
-          <TouchableOpacity
-            style={styles.iconWrapper}
-            activeOpacity={0.75}
-            // onPress={togglePassShowing}
-          >
+          <TouchableOpacity style={styles.iconWrapper} activeOpacity={0.75}>
             <LocationIcon />
           </TouchableOpacity>
         </View>

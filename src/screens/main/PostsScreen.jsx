@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { View, StyleSheet, FlatList, Text } from "react-native";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  onSnapshot,
-  query,
-  orderBy,
-} from "firebase/firestore";
 import { getPostsCollection } from "../../firebase/operations";
 import Avatar from "../../components/Avatar";
 import Post from "../../components/Post";

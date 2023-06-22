@@ -27,6 +27,3 @@ export const authSlice = createSlice({
     authLogOut: () => initialState,
   },
 });
-
-// console.dir(authSlice);
-// export default authSlice.reducer;

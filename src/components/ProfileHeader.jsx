@@ -35,11 +35,10 @@ export default function ProfileHeader({ onPress }) {
     try {
       const newAvatar = await pickAvatar();
 
-      // make jpeg-photo and create his unique id
       const response = await fetch(newAvatar);
       const file = await response.blob();
       const uniqId = nanoid(28);
-      // upload jpeg-photo to server
+
       const storage = getStorage();
       const storageRef = ref(storage, `avatar-images/${uniqId}`);
       const uploading = await uploadBytes(storageRef, file);

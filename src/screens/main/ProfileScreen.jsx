@@ -3,14 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { authSignOutUser, editUser } from "../../redux/auth/authOperations";
 import { StyleSheet, Alert, FlatList, SafeAreaView } from "react-native";
 
-import {
-  collection,
-  query,
-  where,
-  getFirestore,
-  onSnapshot,
-  orderBy,
-} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getPostsCollection } from "../../firebase/operations";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import Post from "../../components/Post";
@@ -34,7 +27,6 @@ export default function ProfileScreen({ navigation }) {
     <ScreenWrapper withScroll>
       <SafeAreaView style={{ justifyContent: "flex-end" }}>
         <FlatList
-          style={styles.list}
           ListHeaderComponent={<ProfileHeader onPress={logOut} />}
           ListHeaderComponentStyle={{ marginTop: 88 }}
           data={userPosts}
@@ -65,10 +57,3 @@ export default function ProfileScreen({ navigation }) {
     </ScreenWrapper>
   );
 }
-
-const styles = StyleSheet.create({
-  list: {
-    // marginTop: 88,
-    // backgroundColor: "#fff",
-  },
-});

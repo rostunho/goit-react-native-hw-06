@@ -1,4 +1,3 @@
-// import db from "../../firebase/config";
 import "../../firebase/config";
 import {
   getAuth,
@@ -17,14 +16,13 @@ export const authSignUpUser =
   ({ login, email, password, avatar }) =>
   async (dispatch, getState) => {
     try {
-      // Create user Profile on Firebase:
       await createUserWithEmailAndPassword(auth, email, password);
-      // Add new fields with reserved names "displayName" and "photoURL" to UserProfile Object
+
       await updateProfile(auth.currentUser, {
         displayName: login,
         photoURL: avatar,
       });
-      // Update User State  object on Redux:
+
       const { uid, displayName, photoURL } = auth.currentUser;
       const updatedProfile = {
         userId: uid,
@@ -63,7 +61,6 @@ export const editUser =
 export const authSignInUser =
   ({ email, password }) =>
   async (dispatch, getState) => {
-    // const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {

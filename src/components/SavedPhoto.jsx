@@ -11,7 +11,6 @@ export default function SavedPhoto({ source }) {
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("window").width - 32,
-    // height: ((Dimensions.get("window").width - 32) * 240) / 343,
     height: ((Dimensions.get("window").width - 32) * 9) / 16,
     justifyContent: "center",
     alignItems: "center",

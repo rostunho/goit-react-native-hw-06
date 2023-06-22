@@ -39,8 +39,6 @@ export default function Comment({ text, time, userAvatar, own }) {
 
 const styles = StyleSheet.create({
   container: {
-    // width: Dimensions.get("window").width - 32,
-    // marginHorizontal: "auto",
     marginBottom: 8,
   },
   textBox: {

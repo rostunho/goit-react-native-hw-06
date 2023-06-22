@@ -45,8 +45,6 @@ export default function Avatar({ large, small, add, source, onPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    // position: "absolute",
-    // top: -60,
     borderRadius: 16,
     backgroundColor: "#F6F6F6",
   },
@@ -69,19 +67,3 @@ const styles = StyleSheet.create({
     width: 28,
   },
 });
-
-// const styles = StyleSheet.create({
-//   container: {
-//     position: "absolute",
-//     top: -60,
-//     height: 120,
-//     width: 120,
-//     borderRadius: 16,
-//     backgroundColor: "#F6F6F6",
-//   },
-//   addIcon: {
-//     position: "absolute",
-//     bottom: 14,
-//     right: -12,
-//   },
-// });

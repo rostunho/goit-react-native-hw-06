@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { Provider } from "react-redux";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-get-random-values";
@@ -10,7 +10,7 @@ import Main from "./src/components/Main";
 
 export default function App() {
   const [fontsLoaded] = useFonts(roboto);
-  // inspect later
+
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       await SplashScreen.hideAsync();

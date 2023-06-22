@@ -20,15 +20,14 @@ const db = getFirestore();
 
 export const uploadPhoto = async (photo) => {
   try {
-    // make jpeg-photo and create his unique id
     const response = await fetch(photo);
     const file = await response.blob();
     const uniqId = nanoid(28);
-    // upload jpeg-photo to server
+
     const storage = getStorage();
     const storageRef = ref(storage, `post-images/${uniqId}`);
     await uploadBytes(storageRef, file);
-    // get back url to jpeg-photo
+
     const processedPhotoUrl = await getDownloadURL(
       ref(storage, `post-images/${uniqId}`)
     );
@@ -42,15 +41,14 @@ export const uploadPhoto = async (photo) => {
 
 export const uploadAvatar = async () => {
   try {
-    // make jpeg-photo and create his unique id
     const response = await fetch(avatar);
     const file = await response.blob();
     const uniqId = nanoid(28);
-    // upload jpeg-photo to server
+
     const storage = getStorage();
     const storageRef = ref(storage, `avatar-images/${uniqId}`);
     const uploading = await uploadBytes(storageRef, file);
-    // get back url to jpeg-photo
+
     const processedPhotoUrl = await getDownloadURL(
       ref(storage, `avatar-images/${uniqId}`)
     );

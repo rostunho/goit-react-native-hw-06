@@ -44,7 +44,6 @@ export default function Post({
   const [liked, setLiked] = useState(false);
   const [locationPressed, setLocationPressed] = useState(false);
   const [commentsPressed, setCommentsPressed] = useState(false);
-  // const [likesPressed, setLikesPressed] = useState(false);
   const { userId } = useSelector((state) => state.auth);
   const db = getFirestore();
 
@@ -112,8 +111,6 @@ export default function Post({
 
 const styles = StyleSheet.create({
   container: {
-    // width: Dimensions.get("window").width,
-    // height: Dimensions.get("window").width / 1.5,
     paddingHorizontal: 16,
     paddingBottom: 32,
     backgroundColor: "#fff",

@@ -47,14 +47,6 @@ export default function CommentsScreen({ route }) {
     };
   }, []);
 
-  //........MAYBE IT WILL BACK LATER...........
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     listRef.current?.scrollToEnd();
-  //   }, 1);
-  // }, [isKeyboardVisible]);
-  //...........................................
-
   const onSubmit = async () => {
     try {
       await sendNewComment();
@@ -125,7 +117,6 @@ export default function CommentsScreen({ route }) {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                   <Comment
-                    // ref={inputRef}
                     text={item.comment}
                     userAvatar={item.userAvatar}
                     time={item.time}

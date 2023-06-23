@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Photo Community",
+    "description": "An application for publishing photos with automatic geolocation detection.",
     "slug": "photo-community",
     "version": "1.0.0",
     "orientation": "portrait",
